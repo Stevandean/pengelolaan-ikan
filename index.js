@@ -1,6 +1,7 @@
 const electron = require('electron')
 const db = require ('./config/database/db_config')
 const {app, BrowserWindow, ipcMain, screen} = electron
+app.allowRenderProcessReuse =true
 
 let mainWindow 
 let pengeluaranWindow
