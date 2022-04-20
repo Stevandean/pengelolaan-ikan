@@ -100,9 +100,6 @@
                 <h6>Tambah Data</h6>
                 <div style="color: black;" class="row">
                     <div class="col-auto">
-                        <input type="text" class="form-control form-control-sm" placeholder="ID" id="id_pengeluaran" required>
-                    </div>
-                    <div class="col-auto">
                         <input type="text" class="form-control form-control-sm" placeholder="Keterangan" id="keterangan_pengeluaran" required>
                     </div>
                     <div class="col-auto">
@@ -115,7 +112,7 @@
                         <input type="text" class="form-control form-control-sm" placeholder="Qty" id="qty_pengeluaran" required>
                     </div>
                     <div class="col-auto">
-                        <button class="btn btn-sm btn-primary"><i class="fa-solid fa-paper-plane"></i> Submit</button>
+                        <button class="btn btn-sm btn-primary" onclick="insertPengeluaran()"><i class="fa-solid fa-paper-plane"></i> Submit</button>
                         <button class="btn btn-sm btn-danger" id="close-form-add-data" onclick="closeFormAddData()"><i class="fa-solid fa-times"></i> Tutup</button>
                     </div>
                 </div>
@@ -146,6 +143,7 @@
     </div>
     <script src="../assets/jquery/jquery-1.9.0.min.js"></script>
     <script src="../assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../assets/js/require.js"></script>
     <script src="../assets/js/toolbar.js"></script>
     <script src="../assets/js/pengeluaran.js"></script>
     <script src="../assets/js/main.js"></script>

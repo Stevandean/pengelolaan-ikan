@@ -9,7 +9,9 @@
   "author": "Stevandean",
   "license": "ISC",
   "dependencies": {
+    "@electron/remote": "^2.0.8",
     "electron": "^18.0.1",
+    "imask": "^6.4.2",
     "sqlite3": "^5.0.2"
   }
 }

@@ -1,7 +1,8 @@
 const electron = require('electron')
 const db = require ('./config/database/db_config')
-const {app, BrowserWindow, ipcMain, screen} = electron
-app.allowRenderProcessReuse =true
+const {app, BrowserWindow, ipcMain, screen, webContents} = electron
+const remote = require('@electron/remote/main')
+remote.initialize()
 
 let mainWindow 
 let pengeluaranWindow
@@ -46,6 +47,8 @@ const {height, width} = screen.getPrimaryDisplay().workAreaSize
         resizable:false,
         title: 'SK4WAN KOI | Pengeluaran'
     })
+
+    remote.enable(pengeluaranWindow.webContents)
 
     pengeluaranWindow.loadFile('windows/pengeluaran.html')
     pengeluaranWindow.webContents.on('did-finish-load', () => {
