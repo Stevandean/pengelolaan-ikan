@@ -27,9 +27,9 @@ function loadPengeluaran() {
             } else {
                 rows.forEach((row) => {
                     tr+=`<tr data-id=${row.id}>
-                            <td data-colname="id">
+                            <td data-colname="Id">
                                 ${row.id}
-                                <input type="checkbox" id="${row.id}" class="data-checkbox">
+                                <input type="checkbox" "id="${row.id}" class="data-checkbox">
                             </td>
                             <td>${row.keterangan}</td>
                             <td>${row.tanggal}</td>
@@ -38,7 +38,7 @@ function loadPengeluaran() {
                             <td>${row.jumlah}</td>
                             <td>
                                 <button class="btn btn-sm btn-light btn-light-bordered"><i class="fa fa-edit"></i></button>
-                                <button class="btn btn-sm btn-danger" onclik="deleteAction(${row.id}, '${row.keterangan}')" id="delete-data"><i class="fa fa-trash"></i></button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteAction(${row.id}, '${row.keterangan}')" id="delete-data"><i class="fa fa-trash"></i></button>
                             </td>
                         </tr>`
                 })

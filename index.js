@@ -6,6 +6,8 @@ remote.initialize()
 
 let mainWindow 
 let pengeluaranWindow
+let penjualanIkanWindow 
+
 mainWin = () => {
     mainWindow = new BrowserWindow ({
         webPreferences: {
@@ -28,6 +30,7 @@ app.on('ready', () => {
     mainWin ()
 })
 
+//WINDOW PENGELUARAN
 ipcMain.on('load:pengeluaran-window', () => {
     pengeluaranWin()
 })
@@ -57,6 +60,41 @@ const {height, width} = screen.getPrimaryDisplay().workAreaSize
 
 
     pengeluaranWindow.on('close', () => {
+        mainWindow.show()
+    })
+
+}
+
+//WINDOW PENJUALAN IKAN
+ipcMain.on('load:penjualanIkan-window', () => {
+    penjualanIkanWin()
+})
+
+penjualanIkanWin = () => {
+
+const {height, width} = screen.getPrimaryDisplay().workAreaSize
+
+    penjualanIkanWindow = new BrowserWindow({
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation:false
+        },
+        autoHideMenuBar:true,
+        height:height,
+        width:width,
+        resizable:false,
+        title: 'SK4WAN KOI | Penjualan Ikan'
+    })
+
+    remote.enable(penjualanIkanWindow.webContents)
+
+    penjualanIkanWindow.loadFile('windows/penjualanIkan.html')
+    penjualanIkanWindow.webContents.on('did-finish-load', () => {
+        mainWindow.hide()
+    })
+
+
+    penjualanIkanWindow.on('close', () => {
         mainWindow.show()
     })
 

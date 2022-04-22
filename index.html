@@ -65,7 +65,7 @@
             </div>
             <div class="col md-3 me-2">
                 <div class="box-menu">
-                    <a href="#" class="menu-link">
+                    <a href="#" class="menu-link" onclick="penjualanIkan()">
                         <img src="./assets/images/icon/fish.png" alt="">
                     </a>
                     <div class="box-menu-title">Penjualan Ikan</div>
@@ -116,6 +116,9 @@
 
         pengeluaran = () => {
             ipcRenderer.send('load:pengeluaran-window')
+        }
+        penjualanIkan = () => {
+            ipcRenderer.send('load:penjualanIkan-window')
         }
 
     </script>
