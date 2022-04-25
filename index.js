@@ -7,6 +7,8 @@ remote.initialize()
 let mainWindow 
 let pengeluaranWindow
 let penjualanIkanWindow 
+let pembelianIkanWindow
+let cashflowWindow
 
 mainWin = () => {
     mainWindow = new BrowserWindow ({
@@ -95,6 +97,76 @@ const {height, width} = screen.getPrimaryDisplay().workAreaSize
 
 
     penjualanIkanWindow.on('close', () => {
+        mainWindow.show()
+    })
+
+}
+
+//WINDOW PEMBELIAN IKAN
+ipcMain.on('load:pembelianIkan-window', () => {
+    pembelianIkanWin()
+})
+
+pembelianIkanWin = () => {
+
+const {height, width} = screen.getPrimaryDisplay().workAreaSize
+
+    pembelianIkanWindow = new BrowserWindow({
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation:false
+        },
+        autoHideMenuBar:true,
+        height:height,
+        width:width,
+        resizable:false,
+        title: 'SK4WAN KOI | pembelian Ikan'
+    })
+
+    remote.enable(pembelianIkanWindow.webContents)
+
+    pembelianIkanWindow.loadFile('windows/pembelianIkan.html')
+    pembelianIkanWindow.webContents.on('did-finish-load', () => {
+        mainWindow.hide()
+    })
+
+
+    pembelianIkanWindow.on('close', () => {
+        mainWindow.show()
+    })
+
+}
+
+//WINDOW CASHFLOW
+ipcMain.on('load:cashflow-window', () => {
+    cashflowWin()
+})
+
+cashflowWin = () => {
+
+const {height, width} = screen.getPrimaryDisplay().workAreaSize
+
+    cashflowWindow = new BrowserWindow({
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation:false
+        },
+        autoHideMenuBar:true,
+        height:height,
+        width:width,
+        resizable:false,
+        title: 'SK4WAN KOI | Cashflow'
+    })
+
+    remote.enable(cashflowWindow.webContents)
+
+    cashflowWindow.loadFile('windows/cashflow.html')
+    cashflowWindow.webContents.on('did-finish-load', () => {
+        mainWindow.hide()
+    })
+
+
+    cashflowWindow.on('close', () => {
         mainWindow.show()
     })
 

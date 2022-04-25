@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../assets/fontawesome/css/all.min.css">
-    <link rel="stylesheet" href="../assets/css/main.css">
-    <title>SK4WAN KOI | Pengeluaran</title>
-</head>
-<body id="pengeluaran-data">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="../assets/fontawesome/css/all.min.css">
+        <link rel="stylesheet" href="../assets/css/main.css">
+        <title>SK4WAN KOI | Cashflow</title>
+    </head>
+    <body id="cashflow-data">
     <nav class="navbar navbar-dark bg-dark">
         <div style="display: inline-block; color:aliceblue">
-            <span id="store-name" class ="ms-2">SK4WAN KOI | Pengeluaran</span></div>
+            <span id="store-name" class ="ms-2">SK4WAN KOI | Pembelian Ikan</span></div>
             <div style="display: inline-block;">
             <div class="dropdown" style="display: inline;">
                 <a href="#" class="btn btn-sm btn-primary me-2" id="userInfoDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -47,8 +47,8 @@
                     <div class="main-toolbar">
                         <div class="row g-3">
                             <div class="col-auto">
-                                <button class="btn btn-sm btn-light btn-light-bordered" id="add-data" title="Tambah Data" onclick="openFormAddData()"><i class="fa fa-plus"></i></button>
-                                <!-- <button class="btn btn-sm btn-light btn-light-bordered" onclick="deleteAction()" id="delete-multiple-data" data-bs-toggle="tooltip" title="Hapus"><i class="fa fa-trash"></i></button> -->
+                                <button class="btn btn-sm btn-light btn-light-bordered" id="add-data" title="Tambah Data" onclick="openFormAddDataPembelian()"><i class="fa fa-plus"></i></button>
+                                <!-- <button class="btn btn-sm btn-light btn-light-bordered"><i class="fa fa-trash"></i></button> -->
                                 <button class="btn btn-sm btn-light btn-light-bordered"><i class="fa fa-file-excel"></i></button>
                                 <button class="btn btn-sm btn-light btn-light-bordered"><i class="fa fa-file-pdf"></i></button>
                                 <button class="btn btn-sm btn-light btn-light-bordered"><i class="fa fa-print"></i></button>
@@ -100,19 +100,19 @@
                 <h6>Tambah Data</h6>
                 <div style="color: black;" class="row">
                     <div class="col-auto">
-                        <input type="text" class="form-control form-control-sm" placeholder="Keterangan" id="keterangan_pengeluaran" required>
+                        <input type="text" class="form-control form-control-sm" placeholder="pembelian" id="pembelian" required>
                     </div>
                     <div class="col-auto">
-                        <input type="date" class="form-control form-control-sm" placeholder="Tanggal" id="tanggal_pengeluaran" required>
+                        <input type="date" class="form-control form-control-sm" placeholder="Tanggal" id="tanggal_pembelian" required>
                     </div>
                     <div class="col-auto">
-                        <input type="text" class="form-control form-control-sm" placeholder="Harga" id="harga_pengeluaran" required>
+                        <input type="text" class="form-control form-control-sm" placeholder="Harga" id="harga_pembelian" required>
                     </div>
                     <div class="col-auto">
-                        <input type="text" class="form-control form-control-sm" placeholder="Qty" id="qty_pengeluaran" required>
+                        <input type="text" class="form-control form-control-sm" placeholder="Qty" id="Qty_pembelian" required>
                     </div>
                     <div class="col-auto">
-                        <button class="btn btn-sm btn-primary" onclick="insertPengeluaran()"><i class="fa-solid fa-paper-plane"></i> Submit</button>
+                        <button class="btn btn-sm btn-primary" onclick="insertPembelianIkan()"><i class="fa-solid fa-paper-plane"></i> Submit</button>
                         <button class="btn btn-sm btn-danger" id="close-form-add-data" onclick="closeFormAddData()"><i class="fa-solid fa-times"></i> Tutup</button>
                     </div>
                 </div>
@@ -126,11 +126,11 @@
                             <thead class="table-light" id="col-head">
                                 <tr>
                                     <th>Id</th>
-                                    <th>Keterangan</th>
+                                    <th>Pembelian</th>
                                     <th>Tanggal</th>
                                     <th>Harga</th>
-                                    <th>Qty</th>
-                                    <th>Jumlah</th>
+                                    <th>Qty </th>
+                                    <th>Nominal</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -145,7 +145,6 @@
     <script src="../assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="../assets/js/require.js"></script>
     <script src="../assets/js/toolbar.js"></script>
-    <script src="../assets/js/pengeluaran.js"></script>
+    <script src="../assets/js/cashflow.js"></script>
     <script src="../assets/js/main.js"></script>
-</body>
-</html>
+</body></html>

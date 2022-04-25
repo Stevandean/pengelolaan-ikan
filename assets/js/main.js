@@ -4,6 +4,15 @@ load_data = () => {
         case 'pengeluaran-data' :
             loadPengeluaran();
             break;
+        case 'penjualan-data' :
+            loadPenjualan();
+            break;
+        case 'cashlow-data':
+            loadCashflow();
+            break;
+        case 'pembelian-data':
+            loadPembelianIkan();
+            break;
     }
 }
 
@@ -16,6 +25,11 @@ deleteRecord = (id) => {
         case 'pengeluaran-data':
             table='pengeluaran'
             break;
+        case 'penjualan-data':
+            table='penjualanIkan';
+            break;
+        case 'pembelian-data':
+            table='pembelianIkan'
     }
     let sql = `delete from ${table} where id =${id}`
     db.run(sql, err => {
@@ -45,15 +59,15 @@ deleteRecord = (id) => {
 //     })
 // }
 
-// deleteMultipleRecords(ids) {
+// deleteMultipleRecords = (ids) => {
 //     let doc_id = $('body').attr('id')
 //     let table
 //     switch (doc_id) {
-//         case 'pengeluaran-data':
-//             table ='pengeluaran';
+//         case 'product-data':
+//             table = 'products';
 //             break;
 //     }
-//     let sql = `delete form ${table} where id IN(${ids})`
+//     let sql = `delete from ${table} where id IN(${ids})`
 //     db.run(sql, err => {
 //         if(err) {
 //             console.log(err)

@@ -16,8 +16,8 @@
 //     }
 // )
 
-function loadPengeluaran() {
-    let query = `select *, harga * qty as jumlah from pengeluaran`
+function loadCashflow() {
+    let query = `select *, harga_pembelian / qty_pembelian as nominal_pembelian from pembelianIkan`
     db.serialize ( () => {
         db.all(query, (err, rows) => {
             if (err) throw err
@@ -31,14 +31,14 @@ function loadPengeluaran() {
                                 ${row.id}
                                 <input type="checkbox" style="visibility:hidden" "id="${row.id}" class="data-checkbox">
                             </td>
-                            <td>${row.keterangan}</td>
-                            <td>${row.tanggal}</td>
-                            <td>${row.harga}</td>
-                            <td>${row.Qty}</td>
-                            <td>${row.jumlah}</td>
+                            <td>${row.pembelian}</td>
+                            <td>${row.tanggal_pembelian}</td>
+                            <td>${row.harga_pembelian}</td>
+                            <td>${row.Qty_pembelian}</td>
+                            <td>${row.nominal_pembelian}</td>
                             <td>
                                 <button class="btn btn-sm btn-light btn-light-bordered"><i class="fa fa-edit"></i></button>
-                                <button class="btn btn-sm btn-danger" onclick="deleteAction(${row.id}, '${row.keterangan}')" id="delete-data"><i class="fa fa-trash"></i></button>
+                                <button class="btn btn-sm btn-danger" onclick="deleteAction(${row.id}, '${row.pembelian}')" id="delete-data"><i class="fa fa-trash"></i></button>
                             </td>
                         </tr>`
                 })
@@ -49,18 +49,18 @@ function loadPengeluaran() {
 }
 
 blankForm = () => {
-    $('#keterangan_pengeluaran').val("")
-    $('#tanggal_pengeluaran').val("")
-    $('#harga_pengeluaran').val("")
-    $('#qty_pengeluaran').val("")
+    $('#pembelian').val("")
+    $('#tanggal_pembelian').val("")
+    $('#harga_pembellian').val("")
+    $('#Qty_pembelian').val("")
 }
 
-insertPengeluaran = () => {
-    let keterangan = $('#keterangan_pengeluaran').val()
-    let tanggal = $('#tanggal_pengeluaran').val()
-    let harga = $('#harga_pengeluaran').val()
-    let Qty = $('#qty_pengeluaran').val()
-    let jumlah = $('#jumlah_pengeluaran').val()
+insertPembelianIkan = () => {
+    let pembelian = $('#pembelian').val()
+    let tanggal = $('#tanggal_pembelian').val()
+    let harga = $('#harga_pembelian').val()
+    let Qty = $('#Qty_pembelian').val()
+    let nominal = $('#nominal_pembelian').val()
 
     let required = $('[required]')
     let required_array  = []
@@ -78,11 +78,11 @@ insertPengeluaran = () => {
         })
     } else {
         db.serialize( () => {
-            db.run(`insert into pengeluaran(keterangan, tanggal, harga, Qty, jumlah) 
-            values ('${keterangan}','${tanggal}','${harga}','${Qty}','${jumlah}')`, err => {
+            db.run(`insert into pembelianIkan(pembelian, tanggal_pembelian, harga_pembelian, Qty_pembelian, nominal_pembelian) 
+            values ('${pembelian}','${tanggal}','${harga}','${Qty}','${nominal}')`, err => {
                 if(err) throw err
                 blankForm()
-                $('#keterangan_pengeluaran').focus()
+                $('#pembelian').focus()
                 load_data()
             })
         })

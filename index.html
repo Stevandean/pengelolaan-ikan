@@ -73,28 +73,28 @@
             </div>
             <div class="col md-3 me-2">
                 <div class="box-menu">
-                    <a href="#" class="menu-link">
-                        <img src="./assets/images/icon/money.png" alt="">
+                    <a href="#" class="menu-link" onclick="pembelianIkan()">
+                        <img src="./assets/images/icon/fish2.png" alt="">
                     </a>
-                    <div class="box-menu-title">Laba - Rugi</div>
+                    <div class="box-menu-title">Pembelian Ikan</div>
                 </div>
             </div>
         </div>
         <div class="d-flex justify-content-center">
             <div class="col md-3 me-2">
                 <div class="box-menu">
-                    <a href="#" class="menu-link">
-                        <img src="./assets/images/icon/report.png" alt="">
+                    <a href="#" class="menu-link" onclick="cashflow()">
+                        <img src="./assets/images/icon/money.png" alt="">
                     </a>
-                    <div class="box-menu-title">Laporan</div>
+                    <div class="box-menu-title">Cash Flow</div>
                 </div>
             </div>
             <div class="col md-3 me-2">
                 <div class="box-menu">
                     <a href="#" class="menu-link">
-                        <img src="./assets/images/icon/expense.png" alt="">
+                        <img src="./assets/images/icon/report.png" alt="">
                     </a>
-                    <div class="box-menu-title">#</div>
+                    <div class="box-menu-title">Laporan</div>
                 </div>
             </div>
             <div class="col md-3 me-2">
@@ -119,6 +119,9 @@
         }
         penjualanIkan = () => {
             ipcRenderer.send('load:penjualanIkan-window')
+        }
+        pembelianIkan = () => {
+            ipcRenderer.send('load:pembelianIkan-window')
         }
 
     </script>
