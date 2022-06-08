@@ -9,6 +9,7 @@ let pengeluaranWindow
 let penjualanIkanWindow 
 let pembelianIkanWindow
 let cashflowWindow
+let laporanWindow
 
 mainWin = () => {
     mainWindow = new BrowserWindow ({
@@ -137,7 +138,7 @@ const {height, width} = screen.getPrimaryDisplay().workAreaSize
 
 }
 
-//WINDOW CASHFLOW
+//WINDOW CASH FLOW
 ipcMain.on('load:cashflow-window', () => {
     cashflowWin()
 })
@@ -155,7 +156,7 @@ const {height, width} = screen.getPrimaryDisplay().workAreaSize
         height:height,
         width:width,
         resizable:false,
-        title: 'SK4WAN KOI | Cashflow'
+        title: 'SK4WAN KOI | cashflow'
     })
 
     remote.enable(cashflowWindow.webContents)
@@ -167,6 +168,41 @@ const {height, width} = screen.getPrimaryDisplay().workAreaSize
 
 
     cashflowWindow.on('close', () => {
+        mainWindow.show()
+    })
+
+}
+
+//WINDOW LAPORAN
+ipcMain.on('load:laporan-window', () => {
+    laporanWin()
+})
+
+laporanWin = () => {
+
+const {height, width} = screen.getPrimaryDisplay().workAreaSize
+
+    laporanWindow = new BrowserWindow({
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation:false
+        },
+        autoHideMenuBar:true,
+        height:height,
+        width:width,
+        resizable:false,
+        title: 'SK4WAN KOI | laporan'
+    })
+
+    remote.enable(laporanWindow.webContents)
+
+    laporanWindow.loadFile('windows/laporan.html')
+    laporanWindow.webContents.on('did-finish-load', () => {
+        mainWindow.hide()
+    })
+
+
+    laporanWindow.on('close', () => {
         mainWindow.show()
     })
 

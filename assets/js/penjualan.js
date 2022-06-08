@@ -74,7 +74,7 @@ insertPenjualanIkan = () => {
         dialog.showMessageBoxSync({
             title: 'alert',
             type: 'info',
-            message: 'Keterangan,tanggal,harga,dan Qty tidak boleh kosong',
+            message: 'Penjual,Tanggal,Harga,dan Qty tidak boleh kosong',
         })
     } else {
         db.serialize( () => {   

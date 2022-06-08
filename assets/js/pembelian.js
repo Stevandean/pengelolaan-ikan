@@ -74,7 +74,7 @@ insertPembelianIkan = () => {
         dialog.showMessageBoxSync({
             title: 'alert',
             type: 'info',
-            message: 'Keterangan,tanggal,harga,dan Qty tidak boleh kosong',
+            message: 'Pembelian,Tanggal,Harga,dan Qty tidak boleh kosong',
         })
     } else {
         db.serialize( () => {

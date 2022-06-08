@@ -86,12 +86,12 @@
                     <a href="#" class="menu-link" onclick="cashflow()">
                         <img src="./assets/images/icon/money.png" alt="">
                     </a>
-                    <div class="box-menu-title">Cash Flow</div>
+                    <div class="box-menu-title">Cash Flow (Coming Soon)</div>
                 </div>
             </div>
             <div class="col md-3 me-2">
                 <div class="box-menu">
-                    <a href="#" class="menu-link">
+                    <a href="#" class="menu-link" onclick="laporan()">
                         <img src="./assets/images/icon/report.png" alt="">
                     </a>
                     <div class="box-menu-title">Laporan</div>
@@ -122,6 +122,12 @@
         }
         pembelianIkan = () => {
             ipcRenderer.send('load:pembelianIkan-window')
+        }
+        cashflow = () => {
+            ipcRenderer.send('load:cashflow-window')
+        }
+        laporan = () => {
+            ipcRenderer.send('load:laporan-window')
         }
 
     </script>

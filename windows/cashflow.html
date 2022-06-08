@@ -12,7 +12,7 @@
     <body id="cashflow-data">
     <nav class="navbar navbar-dark bg-dark">
         <div style="display: inline-block; color:aliceblue">
-            <span id="store-name" class ="ms-2">SK4WAN KOI | Pembelian Ikan</span></div>
+            <span id="store-name" class ="ms-2">SK4WAN KOI | Cashflow</span></div>
             <div style="display: inline-block;">
             <div class="dropdown" style="display: inline;">
                 <a href="#" class="btn btn-sm btn-primary me-2" id="userInfoDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -100,7 +100,7 @@
                 <h6>Tambah Data</h6>
                 <div style="color: black;" class="row">
                     <div class="col-auto">
-                        <input type="text" class="form-control form-control-sm" placeholder="cashflow" id="pembelian" required>
+                        <input type="text" class="form-control form-control-sm" placeholder="pembelian" id="pembelian" required>
                     </div>
                     <div class="col-auto">
                         <input type="date" class="form-control form-control-sm" placeholder="Tanggal" id="tanggal_pembelian" required>
@@ -112,13 +112,16 @@
                         <input type="text" class="form-control form-control-sm" placeholder="Qty" id="Qty_pembelian" required>
                     </div>
                     <div class="col-auto">
-                        <button class="btn btn-sm btn-primary" onclick="insertPembelianIkan()"><i class="fa-solid fa-paper-plane"></i> Submit</button>
+                        <button class="btn btn-sm btn-primary" onclick="insertCashflow()"><i class="fa-solid fa-paper-plane"></i> Submit</button>
                         <button class="btn btn-sm btn-danger" id="close-form-add-data" onclick="closeFormAddData()"><i class="fa-solid fa-times"></i> Tutup</button>
                     </div>
                 </div>
             </div>
         </div>
-    <div style="padding: 5px 20px 20px 20px;">
+        <div style="padding-left: 30px; padding-top: 10px;">
+            <h5>Table Pengeluaran</h5>
+        </div>
+        <div style="padding: 5px 20px 20px 20px;">
             <div class="row">
                 <div class="col-xl-12">
                     <div class="table-responsive">
@@ -126,11 +129,11 @@
                             <thead class="table-light" id="col-head">
                                 <tr>
                                     <th>Id</th>
-                                    <th>Pembelian</th>
+                                    <th>Keterangan</th>
                                     <th>Tanggal</th>
                                     <th>Harga</th>
-                                    <th>Qty </th>
-                                    <th>Nominal</th>
+                                    <th>Qty</th>
+                                    <th>Jumlah</th>
                                     <th></th>
                                 </tr>
                             </thead>
@@ -140,7 +143,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>    
     <script src="../assets/jquery/jquery-1.9.0.min.js"></script>
     <script src="../assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="../assets/js/require.js"></script>

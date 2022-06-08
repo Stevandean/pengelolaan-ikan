@@ -17,7 +17,8 @@
 // )
 
 function loadCashflow() {
-    let query = `select *, harga_pembelian / qty_pembelian as nominal_pembelian from pembelianIkan`
+    let query = `select p.pembelian, p.tanggal_pembelian, p.harga_pembelian, p.Qty_pembelian, p.nominal_pembelian, o.keterangan 
+    from pembelianIkan p, pengeluaran o`
     db.serialize ( () => {
         db.all(query, (err, rows) => {
             if (err) throw err
