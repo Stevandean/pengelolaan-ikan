@@ -13,6 +13,9 @@ let doc_id = $('body').attr('id')
             case 'cashflow-data':
                 loadCashflow();
                 break;
+            case 'laporan-data':
+                loadLaporan();
+                break;
         }
     }
 
