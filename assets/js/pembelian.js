@@ -1,20 +1,38 @@
-// let inputHarga = Imask(
-//     document.getElementById('harga'),
-//     {
-//         mask: 'Rp num',
-//         Blocks: {
-//             num: {
-//                 mask: Number,
-//                 thousendsSeparator:'.',
-//                 scale: 3,
-//                 radix: ',',
-//                 mapToRadix:['.'],
-//                 padFactionalZeros: false,
-//                 signed: false
-//             }
-//         }
-//     }
-// )
+let inputHargaPembelian = IMask(
+    document.getElementById('harga_pembelian'),
+    {
+        mask: 'Rp num',
+        blocks: {
+            num: {
+                mask: Number,
+                thousandsSeparator: '.',
+                scale: 10,
+                radix: ',',
+                mapToRadix: ['.'],
+                padFractionalZeros: false,
+                signed: false
+            }
+        }
+    }
+)
+
+let inputQtyPembelian = IMask(
+    document.getElementById('Qty_pembelian'),
+    {
+        mask: 'num',
+        blocks: {
+            num: {
+                mask: Number,
+                thousandsSeparator: '.',
+                scale: 10,
+                radix: ',',
+                mapToRadix: ['.'],
+                padFractionalZeros: false,
+                signed: false
+            }
+        }
+    }
+)
 
 function loadPembelianIkan() {
     let query = `select *, harga_pembelian / qty_pembelian as nominal_pembelian from pembelianIkan`

@@ -1,8 +1,18 @@
-let doc_id = $('body').attr('id')
-    load_data = () => {
+    let doc_id = $('body').attr('id')
+
+//total page
+total_page = (total_row_displayed) => {
+    switch(doc_id) {
+        case 'pengeluaran-data':
+            // console.log(total_row_displayed)
+            totalPengeluaranPage(total_row_displayed);
+            break;
+    }
+}
+    load_data = (page_number, total_row_displayed) => {
         switch(doc_id) {
             case 'pengeluaran-data' :
-                loadPengeluaran();
+                loadPengeluaran(page_number, total_row_displayed);
                 break;
             case 'penjualan-data' :
                 loadPenjualan();
@@ -19,7 +29,11 @@ let doc_id = $('body').attr('id')
         }
     }
 
-    load_data() 
+    let page_number = $('#page_number').val()
+    let total_row_displayed = $('#row_per_page').val()
+    // let searchVal = $('#search-data').val()
+    load_data(page_number, total_row_displayed)
+    console.log(page_number)
 
     deleteRecord = (id) => {
         let doc_id = $('body').attr('id')
@@ -41,4 +55,22 @@ let doc_id = $('body').attr('id')
             } else
             load_data()
         })
+}
+
+editRecord = (id) => {
+    let doc_id = $('body').attr('id')
+    switch (doc_id) {
+        case 'pengeluaran-data':
+            editPengeluaran(id)
+            break;
+    }
+}
+
+alertSuccess = (msg) => {
+    let div = `<div class="alert alert-success">${msg}</div>`
+    $('#alert').html(div)
+    clearAlert = () => {
+        $('#alert').html("")
+    }
+    setTimeout(clearAlert, 4000)
 }

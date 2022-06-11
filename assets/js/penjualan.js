@@ -1,20 +1,38 @@
-// let inputHarga = Imask(
-//     document.getElementById('harga'),
-//     {
-//         mask: 'Rp num',
-//         Blocks: {
-//             num: {
-//                 mask: Number,
-//                 thousendsSeparator:'.',
-//                 scale: 3,
-//                 radix: ',',
-//                 mapToRadix:['.'],
-//                 padFactionalZeros: false,
-//                 signed: false
-//             }
-//         }
-//     }
-// )
+let inputHargaPenjualan = IMask(
+    document.getElementById('harga_penjualan'),
+    {
+        mask: 'Rp num',
+        blocks: {
+            num: {
+                mask: Number,
+                thousandsSeparator: '.',
+                scale: 10,
+                radix: ',',
+                mapToRadix: ['.'],
+                padFractionalZeros: false,
+                signed: false
+            }
+        }
+    }
+)
+
+let inputQtyPenjualan = IMask(
+    document.getElementById('Qty_penjualan'),
+    {
+        mask: 'num',
+        blocks: {
+            num: {
+                mask: Number,
+                thousandsSeparator: '.',
+                scale: 10,
+                radix: ',',
+                mapToRadix: ['.'],
+                padFractionalZeros: false,
+                signed: false
+            }
+        }
+    }
+)
 
 function loadPenjualan() {
     let query = `select *, harga_penjualan * Qty_penjualan as jumlah_penjualan from penjualanIkan`

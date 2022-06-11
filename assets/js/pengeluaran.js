@@ -1,73 +1,47 @@
-// let inputHarga = Imask(
-//     document.getElementById('harga'),
-//     {
-//         mask: 'Rp num',
-//         Blocks: {
-//             num: {
-//                 mask: Number,
-//                 thousendsSeparator:'.',
-//                 scale: 3,
-//                 radix: ',',
-//                 mapToRadix:['.'],
-//                 padFactionalZeros: false,
-//                 signed: false
-//             }
-//         }
-//     }
-// )
+let inputHarga = IMask(
+    document.getElementById('harga'),
+    {
+        mask: 'Rp num',
+        blocks: {
+            num: {
+                mask: Number,
+                thousandsSeparator: '.',
+                scale: 3,
+                radix: ',',
+                mapToRadix: ['.'],
+                padFractionalZeros: false,
+                signed: false
+            }
+        }
+    }
+)
 
-// let inputPrdPrice = IMask(
-//     document.getElementById('product_price'),
-//     {
-//         mask: 'Rp num',
-//         blocks: {
-//             num: {
-//                 mask: Number,
-//                 thousandsSeparator: '.',
-//                 scale: 3,
-//                 radix: ',',
-//                 mapToRadix: ['.'],
-//                 padFractionalZeros: false,
-//                 signed: false
-//             }
-//         }
-//     }
-// )
-// let inputPrdCost = IMask(
-//     document.getElementById('product_cost'),
-//     {
-//         mask: 'Rp num',
-//         blocks: {
-//             num: {
-//                 mask: Number,
-//                 thousandsSeparator: '.',
-//                 scale: 3,
-//                 radix: ',',
-//                 mapToRadix: ['.'],
-//                 padFractionalZeros: false,
-//                 signed: false
-//             }
-//         }
-//     }
-// )
-// let inputPrdInitQty = IMask(
-//     document.getElementById('product_initial_qty'),
-//     {
-//         mask: 'num',
-//         blocks: {
-//             num: {
-//                 mask: Number,
-//                 thousandsSeparator: '.',
-//                 padFractionalZeros: false,
-//                 signed: false
-//             }
-//         }
-//     }
-// )
+function totalPengeluaranPage (total_row_displayed) {
+    let query = `select count(*) as total_row from pengeluaran`
+    db.serialize( () => {
+        db.each (query, (err, result) => {
+            if(err) throw err
+            let total_page
+            if (result.total_row%total_row_displayed == 0) {
+                total_page = parseInt(result.total_row)/parseInt(total_row_displayed)
+            } else {
+                total_page = parseInt(result.total_row/total_row_displayed) +1
+            }
+            $('#total_pages').val(total_page)
+        })
+    })
+}
 
+function loadPengeluaran(page_number, total_row_displayed) {
+    let row_number
+    if(page_number < 2) {
+        row_number = 0
+    } else {
+        row_number = (page_number-1)*total_row_displayed
+    }
+    total_page(total_row_displayed)
 
-function loadPengeluaran() {
-    let query = `select *, harga * qty as jumlah from pengeluaran`
+    let query = `select * , harga * qty as jumlah from pengeluaran order by id desc limit ${row_number}, ${total_row_displayed}`
     db.serialize ( () => {
         db.all(query, (err, rows) => {
             if (err) throw err
@@ -87,7 +61,7 @@ function loadPengeluaran() {
                             <td>${row.Qty}</td>
                             <td>${row.jumlah}</td>
                             <td>
-                                <button class="btn btn-sm btn-light btn-light-bordered"><i class="fa fa-edit"></i></button>
+                                <button class="btn btn-sm btn-light btn-light-bordered" onclick="editRecord(${row.id})" id="edit-data"><i class="fa fa-edit"></i></button>
                                 <button class="btn btn-sm btn-danger" onclick="deleteAction(${row.id}, '${row.keterangan}')" id="delete-data"><i class="fa fa-trash"></i></button>
                             </td>
                         </tr>`
@@ -98,14 +72,14 @@ function loadPengeluaran() {
     })
 }
 
-blankForm = () => {
+    function blankForm () {
     $('#keterangan_pengeluaran').val("")
     $('#tanggal_pengeluaran').val("")
     $('#harga_pengeluaran').val("")
     $('#qty_pengeluaran').val("")
 }
 
-insertPengeluaran = () => {
+    function insertPengeluaran () {
     let keterangan = $('#keterangan_pengeluaran').val()
     let tanggal = $('#tanggal_pengeluaran').val()
     let harga = $('#harga_pengeluaran').val()
@@ -138,3 +112,42 @@ insertPengeluaran = () => {
         })
     }
 }
+
+function editPengeluaran (id) {  
+let sql = `select * from pengeluaran where id = ${id}`
+    db.all(sql, (err, result) => {
+        if(err) {
+            throw err
+        } else {
+            let row = result[0]
+            let editForm
+            editForm = `<div class="mb-3 mt-4">
+                            <input type="text" value="${row.keterangan}" id="editKetPengeluaran" placeholder="Keterangan" class="form-control form-control-sm">
+                            <input type="hidden" value="${row.keterangan}" id="prevKetPengeluaran">
+                            <input type="hidden" value="${id}" id="rowId">
+                        </div>
+                        <div class="mb-3">
+                            <input type="date" value="${row.tanggal}" id="editTanggalPengeluaran" placeholder="Tanggal" class="form-control form-control-sm">
+                            <input type="hidden" value="${row.tanggal}" id="prevTanggalPengeluaran">
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" value="${row.harga}" id="edithargaPengeluaran" placeholder="harga" class="form-control form-control-sm">
+                            <input type="hidden" value="${row.harga}" id="prevhargaPengeluaran">
+                        </div>
+                        <div class="mb-3">
+                            <input type="text" value="${row.Qty}" id="editQtyPengeluaran" placeholder="Qty" class="form-control form-control-sm">
+                            <input type="hidden" value="${row.Qty}" id="prevQtyPengeluaran">
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button id="smb-data" class="btn btn-sm btn-primary btn-block" id="btn-submit-edit" data-id=${id}><i class="fa fa-paper-plane"></i> Submit</button>
+                        </div>          
+                        `
+            ipcRenderer.send('load:edit','pengeluaran-data', editForm, 360, 300, id)
+        }
+    })
+}
+
+ipcRenderer.on('update:success', (e, msg) => {
+    alertSuccess(msg)
+    load_data()
+})

@@ -10,6 +10,7 @@ let penjualanIkanWindow
 let pembelianIkanWindow
 let cashflowWindow
 let laporanWindow
+let editDataModal
 
 mainWin = () => {
     mainWindow = new BrowserWindow ({
@@ -207,3 +208,48 @@ const {height, width} = screen.getPrimaryDisplay().workAreaSize
     })
 
 }
+
+// Modal Edit Pengeluaran
+editData = (docId, modalForm, modalWidth, modalHeight, rowId) => {
+    let parentWin
+    switch (docId) {
+        case 'pengeluaran-data':
+            parentWin = pengeluaranWindow
+            break;
+    }
+    editDataModal = new BrowserWindow({
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false
+        },
+        width: modalWidth,
+        height: modalHeight,
+        resizable: false,
+        maximizable: false,
+        minimizable: false,
+        parent: parentWin,
+        modal: true,
+        title: 'Edit Data',
+        autoHideMenuBar: true
+    })
+    remote.enable(editDataModal.webContents)
+    editDataModal.loadFile('modals/edit-data.html')
+    editDataModal.webContents.on('did-finish-load', () => {
+        editDataModal.webContents.send('res:form', docId, modalForm, rowId)
+    })
+    editDataModal.on('close', () => {
+        editDataModal = null
+    })
+}
+
+ipcMain.on('load:edit', (e, msgDocId, msgForm, msgWidth, msgHeight, msgRowId) => {
+    editData(msgDocId, msgForm, msgWidth, msgHeight, msgRowId)
+})
+
+ipcMain.on('update:success', (e, msgDocId) => {
+    switch(msgDocId) {
+        case 'pengeluaran-data' :
+            pengeluaranWindow.webContents.send('update:success', 'Sukses Update Pengeluaran')
+    }
+    editDataModal.close()
+})
