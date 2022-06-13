@@ -3,9 +3,14 @@
 //total page
 total_page = (total_row_displayed) => {
     switch(doc_id) {
-        case 'pengeluaran-data':
-            // console.log(total_row_displayed)
+        case 'pengeluaran-data' :
             totalPengeluaranPage(total_row_displayed);
+            break;
+        case 'penjualan-data' :
+            totalPenjualanPage(total_row_displayed);
+            break;
+        case 'pembelian-data' :
+            totalPembelianPage(total_row_displayed);
             break;
     }
 }
@@ -15,10 +20,10 @@ total_page = (total_row_displayed) => {
                 loadPengeluaran(page_number, total_row_displayed);
                 break;
             case 'penjualan-data' :
-                loadPenjualan();
+                loadPenjualan(page_number, total_row_displayed);
                 break;
             case 'pembelian-data':
-                loadPembelianIkan();
+                loadPembelianIkan(page_number, total_row_displayed);
                 break;
             case 'cashflow-data':
                 loadCashflow();
@@ -53,7 +58,7 @@ total_page = (total_row_displayed) => {
             if(err) {
                 console.log(err)
             } else
-            load_data()
+            load_data(1)
         })
 }
 

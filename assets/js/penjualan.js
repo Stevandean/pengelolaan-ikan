@@ -1,41 +1,66 @@
-let inputHargaPenjualan = IMask(
-    document.getElementById('harga_penjualan'),
-    {
-        mask: 'Rp num',
-        blocks: {
-            num: {
-                mask: Number,
-                thousandsSeparator: '.',
-                scale: 10,
-                radix: ',',
-                mapToRadix: ['.'],
-                padFractionalZeros: false,
-                signed: false
-            }
-        }
-    }
-)
+// let inputHargaPenjualan = IMask(
+//     document.getElementById('harga_penjualan'),
+//     {
+//         mask: 'Rp num',
+//         blocks: {
+//             num: {
+//                 mask: Number,
+//                 thousandsSeparator: '.',
+//                 scale: 10,
+//                 radix: ',',
+//                 mapToRadix: ['.'],
+//                 padFractionalZeros: false,
+//                 signed: false
+//             }
+//         }
+//     }
+// )
 
-let inputQtyPenjualan = IMask(
-    document.getElementById('Qty_penjualan'),
-    {
-        mask: 'num',
-        blocks: {
-            num: {
-                mask: Number,
-                thousandsSeparator: '.',
-                scale: 10,
-                radix: ',',
-                mapToRadix: ['.'],
-                padFractionalZeros: false,
-                signed: false
-            }
-        }
-    }
-)
+// let inputQtyPenjualan = IMask(
+//     document.getElementById('Qty_penjualan'),
+//     {
+//         mask: 'num',
+//         blocks: {
+//             num: {
+//                 mask: Number,
+//                 thousandsSeparator: '.',
+//                 scale: 10,
+//                 radix: ',',
+//                 mapToRadix: ['.'],
+//                 padFractionalZeros: false,
+//                 signed: false
+//             }
+//         }
+//     }
+// )
 
-function loadPenjualan() {
-    let query = `select *, harga_penjualan * Qty_penjualan as jumlah_penjualan from penjualanIkan`
+function totalPenjualanPage (total_row_displayed) {
+    let query = `select count(*) as total_row from penjualanIkan`
+    db.serialize( () => {
+        db.each (query, (err, result) => {
+            if(err) throw err
+            let total_page
+            if (result.total_row%total_row_displayed == 0) {
+                total_page = parseInt(result.total_row)/parseInt(total_row_displayed)
+            } else {
+                total_page = parseInt(result.total_row/total_row_displayed) +1
+            }
+            $('#total_pages').val(total_page)
+        })
+    })
+}
+
+function loadPenjualan(page_number, total_row_displayed) {
+    if(total_row_displayed == undefined) total_row_displayed = $('#total_pages').val();
+    let row_number
+    if(page_number < 2) {
+        row_number = 0
+    } else {
+        row_number = (page_number-1)*total_row_displayed
+    }
+    total_page(total_row_displayed)
+
+    let query = `select * , harga_penjualan * Qty_penjualan as jumlah_penjualan from penjualanIkan order by id desc limit ${row_number}, ${total_row_displayed}`
     db.serialize ( () => {
         db.all(query, (err, rows) => {
             if (err) throw err
@@ -101,7 +126,7 @@ insertPenjualanIkan = () => {
                 if(err) throw err
                 blankForm()
                 $('#penjual_penjualan').focus()
-                load_data()
+                load_data(1)
             })
         })
     }

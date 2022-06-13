@@ -248,8 +248,8 @@ ipcMain.on('load:edit', (e, msgDocId, msgForm, msgWidth, msgHeight, msgRowId) =>
 
 ipcMain.on('update:success', (e, msgDocId) => {
     switch(msgDocId) {
-        case 'pengeluaran-data' :
-            pengeluaranWindow.webContents.send('update:success', 'Sukses Update Pengeluaran')
+        case 'pengeluaran-data':
+            pengeluaranWindow.webContents.send('update:success', 'Successfully updates product data')
     }
     editDataModal.close()
 })

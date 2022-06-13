@@ -32,7 +32,8 @@ function totalPengeluaranPage (total_row_displayed) {
     })
 }
 
-function loadPengeluaran(page_number, total_row_displayed) {
+function loadPengeluaran(page_number, total_row_displayed ) {
+    if(total_row_displayed == undefined) total_row_displayed = $('#total_pages').val();
     let row_number
     if(page_number < 2) {
         row_number = 0
@@ -72,14 +73,14 @@ function loadPengeluaran(page_number, total_row_displayed) {
     })
 }
 
-    function blankForm () {
+function blankForm () {
     $('#keterangan_pengeluaran').val("")
     $('#tanggal_pengeluaran').val("")
     $('#harga_pengeluaran').val("")
     $('#qty_pengeluaran').val("")
 }
 
-    function insertPengeluaran () {
+function insertPengeluaran () {
     let keterangan = $('#keterangan_pengeluaran').val()
     let tanggal = $('#tanggal_pengeluaran').val()
     let harga = $('#harga_pengeluaran').val()
@@ -107,7 +108,7 @@ function loadPengeluaran(page_number, total_row_displayed) {
                 if(err) throw err
                 blankForm()
                 $('#keterangan_pengeluaran').focus()
-                load_data()
+                load_data(1)
             })
         })
     }
@@ -145,9 +146,8 @@ let sql = `select * from pengeluaran where id = ${id}`
             ipcRenderer.send('load:edit','pengeluaran-data', editForm, 360, 300, id)
         }
     })
+    ipcRenderer.on('update:success', (e, msg) => {
+        alertSuccess(msg)
+        load_data(1)
+    })
 }
-
-ipcRenderer.on('update:success', (e, msg) => {
-    alertSuccess(msg)
-    load_data()
-})

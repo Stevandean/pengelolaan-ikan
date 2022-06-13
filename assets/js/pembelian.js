@@ -1,41 +1,66 @@
-let inputHargaPembelian = IMask(
-    document.getElementById('harga_pembelian'),
-    {
-        mask: 'Rp num',
-        blocks: {
-            num: {
-                mask: Number,
-                thousandsSeparator: '.',
-                scale: 10,
-                radix: ',',
-                mapToRadix: ['.'],
-                padFractionalZeros: false,
-                signed: false
-            }
-        }
-    }
-)
+// let inputHargaPembelian = IMask(
+//     document.getElementById('harga_pembelian'),
+//     {
+//         mask: 'Rp num',
+//         blocks: {
+//             num: {
+//                 mask: Number,
+//                 thousandsSeparator: '.',
+//                 scale: 10,
+//                 radix: ',',
+//                 mapToRadix: ['.'],
+//                 padFractionalZeros: false,
+//                 signed: false
+//             }
+//         }
+//     }
+// )
 
-let inputQtyPembelian = IMask(
-    document.getElementById('Qty_pembelian'),
-    {
-        mask: 'num',
-        blocks: {
-            num: {
-                mask: Number,
-                thousandsSeparator: '.',
-                scale: 10,
-                radix: ',',
-                mapToRadix: ['.'],
-                padFractionalZeros: false,
-                signed: false
-            }
-        }
-    }
-)
+// let inputQtyPembelian = IMask(
+//     document.getElementById('Qty_pembelian'),
+//     {
+//         mask: 'num',
+//         blocks: {
+//             num: {
+//                 mask: Number,
+//                 thousandsSeparator: '.',
+//                 scale: 10,
+//                 radix: ',',
+//                 mapToRadix: ['.'],
+//                 padFractionalZeros: false,
+//                 signed: false
+//             }
+//         }
+//     }
+// )
 
-function loadPembelianIkan() {
-    let query = `select *, harga_pembelian / qty_pembelian as nominal_pembelian from pembelianIkan`
+function totalPembelianPage (total_row_displayed) {
+    let query = `select count (*) as total_row from pembelianIkan`
+    db.serialize( () => {
+        db.each (query, (err, result) => {
+            if (err) throw err
+            let total_page
+            if (result.total_row%total_row_displayed == 0) {
+                total_page = parseInt(result.total_row)/parseInt(total_row_displayed)
+            }else {
+                total_page = parseInt(result.total_row/total_row_displayed) + 1
+            }
+            $('#total_pages').val(total_page)
+        })
+    })
+}
+
+function loadPembelianIkan(page_number, total_row_displayed) {
+    if(total_row_displayed == undefined) total_row_displayed = $('#total_pages').val();
+    let row_number
+    if(page_number < 2) {
+        row_number = 0
+    } else {
+        row_number = (page_number-1) * total_row_displayed
+    }
+    total_page(total_row_displayed)
+
+    let query = `select *, harga_pembelian / qty_pembelian as nominal_pembelian from pembelianIkan order by id desc limit ${row_number}, ${total_row_displayed}`
     db.serialize ( () => {
         db.all(query, (err, rows) => {
             if (err) throw err
@@ -69,7 +94,7 @@ function loadPembelianIkan() {
 blankForm = () => {
     $('#pembelian').val("")
     $('#tanggal_pembelian').val("")
-    $('#harga_pembellian').val("")
+    $('#harga_pembelian').val("")
     $('#Qty_pembelian').val("")
 }
 
@@ -101,7 +126,7 @@ insertPembelianIkan = () => {
                 if(err) throw err
                 blankForm()
                 $('#pembelian').focus()
-                load_data()
+                load_data(1)
             })
         })
     }
