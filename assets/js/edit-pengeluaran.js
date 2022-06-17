@@ -1,32 +1,36 @@
-    function SubmitEditPengeluaran (id) {
+function SubmitEditPengeluaran (id) {
     let keterangan = $('#edit-form').find('#editKetPengeluaran').val()
     let tanggal = $('#edit-form').find('#editTanggalPengeluaran').val()
     let harga = $('#edit-form').find('#edithargaPengeluaran').val()
     let Qty = $('#edit-form').find('#editQtyPengeluaran').val()
 
+    //Ganti Format
+    harga = harga.slice(2, harga.length).replace(/\./g , "")
+    Qty = Qty.replace(/\./g,"")    
+
     if(keterangan === "") {
         dialog.showMessageBoxSync({
             title: 'Alert',
             type: 'info',
-            message: 'Keterangan Tidak Boleh Kosong'
+            message: 'Keterangan Pengeluaran Tidak Boleh Kosong'
         })
     } else if (tanggal === "" ) {
         dialog.showMessageBoxSync ({
             title: 'Alert',
             type: 'info',
-            message: 'Tanggal Tidak Boleh Kosong'
+            message: 'Tanggal Pengeluaran Tidak Boleh Kosong'
         })
     } else if (harga === "") {
         dialog.showMessageBoxSync ({
             title: 'Alert',
             type: 'info',
-            message: 'Harga Tidak Boleh Kosong'
+            message: 'Harga Pengeluaran Tidak Boleh Kosong'
         })
     } else if (Qty === "") {
         dialog.showMessageBoxSync ({
             title: 'Alert',
             type: 'info',
-            message: 'Qty Tidak Boleh Kosong'
+            message: 'Qty Pengeluaran Tidak Boleh Kosong'
         })
 
     } else {

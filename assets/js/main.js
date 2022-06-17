@@ -1,32 +1,33 @@
-    let doc_id = $('body').attr('id')
+let doc_id = $('body').attr('id')
 
-//total page
-total_page = (total_row_displayed) => {
-    switch(doc_id) {
-        case 'pengeluaran-data' :
-            totalPengeluaranPage(total_row_displayed);
-            break;
-        case 'penjualan-data' :
-            totalPenjualanPage(total_row_displayed);
-            break;
-        case 'pembelian-data' :
-            totalPembelianPage(total_row_displayed);
-            break;
-    }
-}
-    load_data = (page_number, total_row_displayed) => {
+// //total page
+// total_page = (total_row_displayed) => {
+//     switch(doc_id) {
+//         case 'pengeluaran-data' :
+//             totalPengeluaranPage(total_row_displayed);
+//             break;
+//         case 'penjualan-data' :
+//             totalPenjualanPage(total_row_displayed);
+//             break;
+//         case 'pembelian-data' :
+//             totalPembelianPage(total_row_displayed);
+//             break;
+//     }
+// }
+
+    load_data = (query) => {
         switch(doc_id) {
             case 'pengeluaran-data' :
-                loadPengeluaran(page_number, total_row_displayed);
+                loadPengeluaran(query);
                 break;
             case 'penjualan-data' :
-                loadPenjualan(page_number, total_row_displayed);
+                loadPenjualan(query);
                 break;
             case 'pembelian-data':
-                loadPembelianIkan(page_number, total_row_displayed);
+                loadPembelianIkan(query);
                 break;
             case 'cashflow-data':
-                loadCashflow();
+                loadCashflow(query);
                 break;
             case 'laporan-data':
                 loadLaporan();
@@ -34,11 +35,10 @@ total_page = (total_row_displayed) => {
         }
     }
 
-    let page_number = $('#page_number').val()
-    let total_row_displayed = $('#row_per_page').val()
+    // let page_number = $('#page_number').val()
+    // let total_row_displayed = $('#row_per_page').val()
     // let searchVal = $('#search-data').val()
-    load_data(page_number, total_row_displayed)
-    console.log(page_number)
+    load_data()
 
     deleteRecord = (id) => {
         let doc_id = $('body').attr('id')
@@ -58,7 +58,7 @@ total_page = (total_row_displayed) => {
             if(err) {
                 console.log(err)
             } else
-            load_data(1)
+            load_data()
         })
 }
 
@@ -67,6 +67,12 @@ editRecord = (id) => {
     switch (doc_id) {
         case 'pengeluaran-data':
             editPengeluaran(id)
+            break;
+        case 'penjualan-data' :
+            editPenjualan(id)
+            break;
+        case 'pembelian-data' :
+            editPembelian(id)
             break;
     }
 }

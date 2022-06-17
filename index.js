@@ -216,6 +216,12 @@ editData = (docId, modalForm, modalWidth, modalHeight, rowId) => {
         case 'pengeluaran-data':
             parentWin = pengeluaranWindow
             break;
+        case 'penjualan-data' :
+            parentWin = penjualanIkanWindow
+            break;
+        case 'pembelian-data' :
+            parentWin = pembelianIkanWindow
+            break;
     }
     editDataModal = new BrowserWindow({
         webPreferences: {
@@ -224,7 +230,7 @@ editData = (docId, modalForm, modalWidth, modalHeight, rowId) => {
         },
         width: modalWidth,
         height: modalHeight,
-        resizable: false,
+        resizable: true,
         maximizable: false,
         minimizable: false,
         parent: parentWin,
@@ -246,10 +252,17 @@ ipcMain.on('load:edit', (e, msgDocId, msgForm, msgWidth, msgHeight, msgRowId) =>
     editData(msgDocId, msgForm, msgWidth, msgHeight, msgRowId)
 })
 
-ipcMain.on('update:success', (e, msgDocId) => {
+ipcMain.on('update:success',  (e, msgDocId) => {
     switch(msgDocId) {
-        case 'pengeluaran-data':
-            pengeluaranWindow.webContents.send('update:success', 'Successfully updates product data')
+        case 'pengeluaran-data' :
+            pengeluaranWindow.webContents.send('update:success', 'Sukses Update Data Pengeluaran')
+            break;
+        case 'penjualan-data' :
+            penjualanIkanWindow.webContents.send('update:success', 'Sukses Update Data Penjualan')
+            break;
+        case 'pembelian-data' :
+            pembelianIkanWindow.webContents.send('update:success', 'Sukses Update Data Pembelian')
+            break;
     }
     editDataModal.close()
 })

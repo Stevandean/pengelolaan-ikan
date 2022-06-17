@@ -91,19 +91,15 @@ function penjualan(rows){
 
 function cetak(tabel,data){
     let total = 0;
-    let tr = "";
-    console.log(data)
-    if(data.length > 0 && Array.isArray(data)){
-        tr = data.map(arr => {
-            total += arr.jumlah
-            return `<tr>
-                <td>${bulan[arr.bln-1]}</td>
-                <td>${arr.qty}</td>
-                <td>${arr[tabel == "pengeluaran"? "keterangan" : tabel == "penjualan" ? "penjual" : "pembeli"]}</td>
-                <td>${idFormat(arr.jumlah)}</td>
-            </tr>`
-        })
-    }
+    let tr = data.map(arr => {
+        total += arr.jumlah
+        return `<tr>
+            <td>${bulan[arr.bln-1]}</td>
+            <td>${arr.qty}</td>
+            <td>${arr[tabel == "pengeluaran"? "keterangan" : tabel == "penjualan" ? "penjual" : "pembeli"]}</td>
+            <td>${idFormat(arr.jumlah)}</td>
+        </tr>`
+    })
     tr += 
         `<tr>
             <td colspan="3"><strong>Total<strong></td>
@@ -113,11 +109,10 @@ function cetak(tabel,data){
 }
 
 //keseluruhan
-function loadKeseluruhan([dt_pembelian = [[]], dt_penjualan = [[]], dt_pengeluaran = [[]]]) {
+function loadKeseluruhan(dt_pembelian, dt_penjualan, dt_pengeluaran) {
     let total = 0;
     let tr = ``;
-    let seluruh = [] 
-    //perbulan
+    let seluruh = [] //perbulan
     let perbulan = [...dt_pembelian[0],... dt_pengeluaran[0],... dt_penjualan[0]]
 
     //untuk mendapatkan nilai unik dan disorting
@@ -127,22 +122,12 @@ function loadKeseluruhan([dt_pembelian = [[]], dt_penjualan = [[]], dt_pengeluar
     
     //untuk memasukan nilai ke dalam array
     perbulan.forEach((arr) =>{
-        let keluar1 = 0
-        let keluar2 = 0
-        let masuk = 0
-
         //untuk nilai keluar
-        if(dt_pembelian[1].length > 0) {
-            keluar1 = parseInt(dt_pembelian[1].filter(bel => bel.bln == arr).map(be => be.jumlah))
-        };
-        if(dt_pengeluaran[1].length > 0) {
-            keluar2 = parseInt(dt_pengeluaran[1].filter(pel => pel.bln == arr).map(pe => pe.jumlah));
-        }
+        let keluar1 = parseInt(dt_pembelian[1].filter(bel => bel.bln == arr).map(be => be.jumlah));
+        let keluar2 = parseInt(dt_pengeluaran[1].filter(pel => pel.bln == arr).map(pe => pe.jumlah));
 
         //untuk nilai masuk
-        if(dt_penjualan[1].length > 0) {
-            masuk = parseInt(dt_penjualan[1].filter(jual => jual.bln == arr).map(ju => ju.jumlah));
-        }
+        let masuk = parseInt(dt_penjualan[1].filter(jual => jual.bln == arr).map(ju => ju.jumlah));
         
         seluruh.push([arr, (isNaN(keluar1)? 0 : keluar1 )+ (isNaN(keluar2)? 0: keluar2), isNaN(masuk)? 0 : masuk])
     })
@@ -169,80 +154,40 @@ function loadKeseluruhan([dt_pembelian = [[]], dt_penjualan = [[]], dt_pengeluar
 }
 
 //semua tabel 
-function semua(keyword =  ""){
+function semua(){
     let dt;
 
     db.serialize(async () => {
+        let data1;
 
         //fug it, callback hell 🔥🔥🔥
-        if(keyword == ""){
-            let query1 = `select *, harga_pembelian / qty_pembelian as nominal_pembelian from pembelianIkan`;
-            db.all(query1,async (err, rows1) => {
-                let query2 = `select *, harga_penjualan * Qty_penjualan as jumlah_penjualan from penjualanIkan`
-                db.all(query2,async (err, rows2) => {
-                    let query3 = `select *, harga * qty as jumlah from pengeluaran`
-                    db.all(query3,async (err, rows3) => {
+        let query1 = `select *, harga_pembelian / qty_pembelian as nominal_pembelian from pembelianIkan`;
+        db.all(query1,async (err, rows1) => {
+            let query2 = `select *, harga_penjualan * Qty_penjualan as jumlah_penjualan from penjualanIkan`
+            db.all(query2,async (err, rows2) => {
+                let query3 = `select *, harga * qty as jumlah from pengeluaran`
+                db.all(query3,async (err, rows3) => {
 
-                        // console.log(rows1, rows2, rows3)
-                        //waktunya mengeprint tabel 3
-                        cetak("pengeluaran", pengeluaran(rows3)[1]);
-                        cetak("penjualan", penjualan(rows2)[1]);
-                        cetak("pembelian", pembelian(rows1)[1]);
+                    // console.log(rows1, rows2, rows3)
+                    console.log(pengeluaran(rows3)[1]);
+                    //waktunya mengeprint tabel 3
+                    cetak("pengeluaran", pengeluaran(rows3)[1]);
+                    cetak("penjualan", penjualan(rows2)[1]);
+                    cetak("pembelian", pembelian(rows1)[1]);
 
-                        //waktunya memproses tabel total
-                        loadKeseluruhan([pembelian(rows1),penjualan(rows2),pengeluaran(rows3)])
-                    });
+                    //waktunya memproses tabel total
+                    loadKeseluruhan(pembelian(rows1),penjualan(rows2),pengeluaran(rows3))
                 });
             });
-        } else {
-            console.log(keyword)
-
-            // Pembelian
-            let query1 = `select *, harga_pembelian / qty_pembelian as nominal_pembelian from pembelianIkan where pembelian like '%${keyword}%' or tanggal_pembelian like '%${keyword}%' or harga_pembelian like '%${keyword}%' or Qty_pembelian like '%${keyword}%' or nominal_pembelian like '%${keyword}%' ` ;
-            db.all(query1,async (err, rows1) => {
-
-                // Penjualan
-                let query2 = `select * , harga_penjualan * Qty_penjualan as jumlah_penjualan from penjualanIkan where penjual_penjualan like '%${keyword}%' or tanggal_penjualan like '%${keyword}%' or harga_penjualan like '%${keyword}%' or Qty_penjualan like '%${keyword}%' or jumlah_penjualan like '%${keyword}%' `
-                db.all(query2,async (err, rows2) => {
-
-                    // Pengeluaran
-                    let query3 = `select *, harga * qty as jumlah from pengeluaran where keterangan like '%${keyword}%' or tanggal like '%${keyword}%' or harga like '%${keyword}%' or Qty like '%${keyword}%' or jumlah like '%${keyword}%' `
-                    db.all(query3,async (err, rows3) => {
-
-                        let all = []
-                        console.log(rows1, rows2, rows3)
-                        // console.log(pengeluaran(rows3)[1]);
-                        //waktunya mengeprint tabel 3
-
-
-
-                        if(pengeluaran(rows3)[1].length > 0){
-                            cetak("pengeluaran", pengeluaran(rows3)[1])
-                            all.push(pengeluaran(rows3))
-                        };
-                        if(penjualan(rows2)[1].length > 0){
-                            cetak("penjualan", penjualan(rows2)[1])
-                            all.push(penjualan(rows2))
-                        };
-                        if(pembelian(rows1)[1].length > 0){
-                            all.push(pembelian(rows1))
-                            cetak("pembelian", pembelian(rows1)[1])
-                        }else{
-                            cetak("pembelian")
-                        }
-
-                        //waktunya memproses tabel total
-                        loadKeseluruhan(all)
-                    });
-                });
-            });
-        }
-        
+        });
     })
 
     return dt
 }
 
-function loadCashflow(keyword){
-    semua(keyword)
+
+
+
+function loadCashflow(){
+    semua()
 }

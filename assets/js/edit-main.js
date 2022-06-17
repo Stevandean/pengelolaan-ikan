@@ -4,7 +4,7 @@ ipcRenderer.on('res:form', (e, editDocId, editForm, rowId) => {
     $('#edit-form').html(editForm)
     doc_id = editDocId
     id = rowId
-    console.log(SubmitEditData)
+    // console.log(SubmitEditData)
     // console.log(SubmitEditData())
 
     let mdl = document.querySelector("#mdl");
@@ -20,6 +20,12 @@ function SubmitEditData (id) {
     switch (doc_id) {
         case 'pengeluaran-data' :
             SubmitEditPengeluaran(id)
+            break;
+        case 'penjualan-data' :
+            SubmitEditPenjualan(id)
+            break;
+        case 'pembelian-data' :
+            SubmitEditPembelian(id)
             break;
     }
 }

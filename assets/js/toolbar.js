@@ -35,98 +35,95 @@ function deleteAction(id = false, data = false) {
         } else {
             deleteRecord(id)
         }
-    } 
-    else {
-        array_ids = []
-        $('input.data-checkbox:checked').each(function() {
-            let ids = $(this).attr('id')
-            array_ids.push(ids)
-        })
-        if(array_ids.length < 1) {
-            let msgBox = dialog.showMessageBoxSync({
-                type: 'question',
-                title: 'Delete records',
-                buttons: ['No','Yes'],
-                defaultId: [0,1],
-                message: 'ATTENTION. You did not select eny record. If no record selected, then this action WILL DELETE ALL RECORDS in the table. Are you sure you want to delete all records in this table?'
-            })
-            if(msgBox === 0) {
-                console.log('No')
-            } else {
-                deleteAllRecords()
-            }
-        } else {
-            let msgBox = dialog.showMessageBoxSync({
-                type: 'question',
-                title: 'Delete records',
-                buttons: ['No','Yes'],
-                defaultId: [0,1],
-                message: 'Are you sure you want to delete the selected records ?'
-            })
-            if(msgBox === 0) {
-                console.log('No')
-                $('input.data-checkbox').prop("checked", false)
-            } else {
-                join_array_ids = array_ids.join(",")
-                deleteMultipleRecords(join_array_ids)
-            }
-        }   
-    }
+    }   
 }
 
 //Pagination
-$('#first-page').click(function(e) {
-    e.preventDefault()
-    let total_row_displayed = $('#row_per_page').val()
-    $('#page_number').val(1)
-    load_data(1, total_row_displayed) 
-})
-$('#last-page').click(function(e) {
-    e.preventDefault()
-    let total_page = $('#total_pages').val()
-    $('#page_number').val(total_page)
-    let total_row_displayed = $('#row_per_page').val()
-    load_data(total_page, total_row_displayed)
-    console.log(total_page, total_row_displayed)
-})
-$('#page_number').keyup(function() {
-    let page_number = $(this).val()
-    let total_row_displayed = $('#row_per_page').val()
-    load_data(page_number, total_row_displayed)
-})
+// $('#first-page').click(function(e) {
+//     e.preventDefault()
+//     let total_row_displayed = $('#row_per_page').val()
+//     $('#page_number').val(1)
+//     load_data(1, total_row_displayed) 
+// })
+// $('#last-page').click(function(e) {
+//     e.preventDefault()
+//     let total_page = $('#total_pages').val()
+//     $('#page_number').val(total_page)
+//     let total_row_displayed = $('#row_per_page').val()
+//     load_data(total_page, total_row_displayed)
+//     console.log(total_page, total_row_displayed)
+// })
+// $('#page_number').keyup(function() {
+//     let page_number = $(this).val()
+//     let total_row_displayed = $('#row_per_page').val()
+//     load_data(page_number, total_row_displayed)
+// })
 
-$('#next-page').click(function(e) {
-    e.preventDefault()
-    let total_page = $('#total_pages').val()
-    let input_val = $('#page_number').val()
-    if (input_val == "") {
-        input_val = 1
-    }
-    var page_no = parseInt(input_val)
-    var total_row_displayed = $('#row_per_page').val()
-    if (page_no < total_page) {
-        $('#page_number').val(page_no + 1)
-        load_data(page_no + 1, total_row_displayed)
-    }
-})
-$('#prev-page').click(function(e) {
-    e.preventDefault()
-    var input_val = $('#page_number').val()
-    var page_no = parseInt (input_val)
-    if (page_no > 1) {
-        $('#page_number').val(page_no - 1)
-        var total_row_displayed = $('#row_per_page').val()
-        load_data(page_no - 1, total_row_displayed)
-    }
-})
+// $('#next-page').click(function(e) {
+//     e.preventDefault()
+//     let total_page = $('#total_pages').val()
+//     let input_val = $('#page_number').val()
+//     if (input_val == "") {
+//         input_val = 1
+//     }
+//     var page_no = parseInt(input_val)
+//     var total_row_displayed = $('#row_per_page').val()
+//     if (page_no < total_page) {
+//         $('#page_number').val(page_no + 1)
+//         load_data(page_no + 1, total_row_displayed)
+//     }
+// })
+// $('#prev-page').click(function(e) {
+//     e.preventDefault()
+//     var input_val = $('#page_number').val()
+//     var page_no = parseInt (input_val)
+//     if (page_no > 1) {
+//         $('#page_number').val(page_no - 1)
+//         var total_row_displayed = $('#row_per_page').val()
+//         load_data(page_no - 1, total_row_displayed)
+//     }
+// })
 
-$('#row_per_page').change(function () {
-    var total_row_displayed = $(this).val()
-    var page_number = $('#page_number').val()
-    var total_page = $('#total_page').val()
-    if (page_number > total_page) {
-        var page_number = 1
-        $ ('#page_number').val(1)
+// $('#row_per_page').change(function () {
+//     var total_row_displayed = $(this).val()
+//     var page_number = $('#page_number').val()
+//     var total_page = $('#total_page').val()
+//     if (page_number > total_page) {
+//         var page_number = 1
+//         $ ('#page_number').val(1)
+//     }
+//     load_data(page_number, total_row_displayed)
+// })
+
+function search() {
+    let doc_id = $('body').attr('id')
+    let searchVal = $('#search-data').val()
+
+    let query 
+    if (searchVal != "") {
+        switch (doc_id) {
+            case 'pengeluaran-data' :
+                query = `select *, harga * qty as jumlah from pengeluaran where keterangan like '%${searchVal}%' or tanggal like '%${searchVal}%' or harga like '%${searchVal}%' or Qty like '%${searchVal}%' or jumlah like '%${searchVal}%' ` 
+                break;
+            case 'penjualan-data' :
+                query = `select * , harga_penjualan * Qty_penjualan as jumlah_penjualan from penjualanIkan where penjual_penjualan like '%${searchVal}%' or tanggal_penjualan like '%${searchVal}%' or harga_penjualan like '%${searchVal}%' or Qty_penjualan like '%${searchVal}%' or jumlah_penjualan like '%${searchVal}%' `
+                break;
+            case 'pembelian-data' :
+                query = `select *, harga_pembelian / qty_pembelian as nominal_pembelian from pembelianIkan where pembelian like '%${searchVal}%' or tanggal_pembelian like '%${searchVal}%' or harga_pembelian like '%${searchVal}%' or Qty_pembelian like '%${searchVal}%' or nominal_pembelian like '%${searchVal}%' `
+                break;
+            case "cashflow-data" :
+                query = searchVal
+                break;
+        }
     }
-    load_data(page_number, total_row_displayed)
+
+    // console.log(query)
+    load_data(query)
+    // console.log(searchVal)
+}
+
+$('#search-data').keydown(function (e) {
+    if (e.keyCode === 13) {
+        search()
+    }
 })
