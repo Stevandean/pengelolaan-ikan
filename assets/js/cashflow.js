@@ -178,7 +178,7 @@ function loadKeseluruhan([dt_pembelian = [[]], dt_penjualan = [[]], dt_pengeluar
         
         seluruh.push([bulan[arr-1], (isNaN(keluar1)? 0 : keluar1 )+ (isNaN(keluar2)? 0: keluar2), isNaN(masuk)? 0 : masuk])
     })
-    //jika ada yang dicari ma a
+    //jika ada yang dicari maka
     if(keyword != ""){
         let reg = new RegExp(keyword)
         seluruh = seluruh.filter(sel => {

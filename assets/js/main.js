@@ -30,7 +30,7 @@ let doc_id = $('body').attr('id')
                 loadCashflow(query);
                 break;
             case 'laporan-data':
-                loadLaporan();
+                loadLaporan(query);
                 break;
         }
     }

@@ -77,3 +77,11 @@ tbody#data:hover {
 .body-utama {
     background-color: #EFF2F1;
 }
+
+/* untuk draggable/ kecuali unyuk button */
+.drag {
+    -webkit-app-region : drag;
+}
+.drag .btn{
+    -webkit-app-region : none;
+}

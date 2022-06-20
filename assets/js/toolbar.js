@@ -114,12 +114,15 @@ function search() {
             case "cashflow-data" :
                 query = searchVal
                 break;
+            case 'laporan-data' :
+                query = searchVal
+                console.log(searchVal)
         }
     }
 
     // console.log(query)
     load_data(query)
-    // console.log(searchVal)
+    // console.log(searchVal)q
 }
 
 $('#search-data').keydown(function (e) {

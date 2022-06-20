@@ -2,6 +2,8 @@ const electron = require('electron')
 const db = require ('./config/database/db_config')
 const {app, BrowserWindow, ipcMain, screen, webContents} = electron
 const remote = require('@electron/remote/main')
+const rmt = require('electron').remote; // hapusss bila tidak digunakan
+const ipc = ipcMain
 remote.initialize()
 
 let mainWindow 
@@ -14,6 +16,7 @@ let editDataModal
 
 mainWin = () => {
     mainWindow = new BrowserWindow ({
+        frame: false,
         webPreferences: {
             nodeIntegration: true,
             contextIsolation:false
@@ -30,6 +33,28 @@ mainWin = () => {
     })
 }
 
+// Untuk Close
+ipcMain.on('close:window', () => {
+    console.log("test untuk close 2")
+    close()
+})
+
+// Untuk Minimize
+ipcMain.on ('minimize:window', () => {
+    minimize()
+})
+
+function minimize(){
+    mainWindow.minimize()    
+}
+
+function close(){
+    // let window = rmt.getCurrentWindow();
+    // window.close(); 
+    app.quit(); 
+    // console.log(remote)
+}
+
 app.on('ready', () => {
     mainWin ()
 })
@@ -44,6 +69,7 @@ pengeluaranWin = () => {
 const {height, width} = screen.getPrimaryDisplay().workAreaSize
 
     pengeluaranWindow = new BrowserWindow({
+        frame: false,
         webPreferences: {
             nodeIntegration: true,
             contextIsolation:false
@@ -79,6 +105,7 @@ penjualanIkanWin = () => {
 const {height, width} = screen.getPrimaryDisplay().workAreaSize
 
     penjualanIkanWindow = new BrowserWindow({
+        frame: false,
         webPreferences: {
             nodeIntegration: true,
             contextIsolation:false
@@ -114,6 +141,7 @@ pembelianIkanWin = () => {
 const {height, width} = screen.getPrimaryDisplay().workAreaSize
 
     pembelianIkanWindow = new BrowserWindow({
+        frame: false,
         webPreferences: {
             nodeIntegration: true,
             contextIsolation:false
@@ -149,6 +177,7 @@ cashflowWin = () => {
 const {height, width} = screen.getPrimaryDisplay().workAreaSize
 
     cashflowWindow = new BrowserWindow({
+        frame: false,
         webPreferences: {
             nodeIntegration: true,
             contextIsolation:false
@@ -184,6 +213,7 @@ laporanWin = () => {
 const {height, width} = screen.getPrimaryDisplay().workAreaSize
 
     laporanWindow = new BrowserWindow({
+        frame: false,
         webPreferences: {
             nodeIntegration: true,
             contextIsolation:false
@@ -265,4 +295,42 @@ ipcMain.on('update:success',  (e, msgDocId) => {
             break;
     }
     editDataModal.close()
+})
+
+ipcMain.on("close:data", (e, docId) => {
+    switch(docId) {
+        case 'pengeluaran-data' :
+            pengeluaranWindow.close()
+            break;
+        case 'penjualan-data' :
+            penjualanIkanWindow.close()
+            break;
+        case 'pembelian-data' :
+            pembelianIkanWindow.close()
+            break;
+        case 'cashflow-data' :
+            cashflowWindow.close()
+            break;
+        case 'laporan-data' : 
+        laporanWindow.close()
+    }
+})
+
+ipcMain.on ("minimize:data", (e, id) => {
+    switch (id) {
+        case 'pengeluaran-data':
+            pengeluaranWindow.minimize()
+            break;
+        case 'penjualan-data' :
+            penjualanIkanWindow.minimize()
+            break;
+        case 'pembelian-data' :
+            pembelianIkanWindow.minimize()
+            break;
+        case 'cashflow-data' :
+            cashflowWindow.minimize()
+            break;
+        case 'laporan-data' :
+            laporanWindow.minimize()
+        }
 })

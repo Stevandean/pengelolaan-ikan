@@ -115,7 +115,7 @@ function loadPembelianIkan(query = `select *, harga_pembelian / qty_pembelian as
             if (err) throw err
             let tr = ''
             if(rows.length <1) {
-                tr += ''
+                tr += '<tr><td colspan ="4"><strong>data tidak ada ( ﾉ ﾟｰﾟ)ﾉ </strong></td></tr>'
             } else {
                 rows.forEach((row) => {
                     tr+=`<tr data-id=${row.id}>
@@ -128,7 +128,7 @@ function loadPembelianIkan(query = `select *, harga_pembelian / qty_pembelian as
                             <td>${formatIdr(String(row.harga_pembelian))}</td>
                             <td>${row.Qty_pembelian}</td>
                             <td>${formatIdr(String(row.nominal_pembelian))}</td>
-                            <td>
+                            <td class = "hide-print">
                                 <button class="btn btn-sm btn-light btn-light-bordered" onclick="editRecord(${row.id})"><i class="fa fa-edit"></i></button>
                                 <button class="btn btn-sm btn-danger" onclick="deleteAction(${row.id}, '${row.pembelian}')" id="delete-data"><i class="fa fa-trash"></i></button>
                             </td>
