@@ -89,64 +89,31 @@ function penjualan(rows){
     return [perbulan, data]
 }
 
-function cetak(tabel,data, keyword = ""){
+function cetak(tabel,data){
     let total = 0;
     let tr = "";
-    let dt ; //data yang telah difilter
-    // console.log(data)
+    console.log(data)
     if(data.length > 0 && Array.isArray(data)){
-
-        dt = data.map(arr => {
+        tr = data.map(arr => {
             total += arr.jumlah
-            return [
-                bulan[arr.bln-1],
-                arr.qty,
-                arr[tabel == "pengeluaran"? "keterangan" : tabel == "penjualan" ? "penjual" : "pembeli"],
-                idFormat(arr.jumlah)
-            ]
-        })
-        console.log(dt)
-        //jika keyword ada maka cari terlebih dahulu
-        if(keyword != ""){
-            let reg = new RegExp(keyword)
-            dt = dt
-            .filter(arr => {
-                return(
-                    arr[0].match(reg) ||
-                    String(arr[1]).match(reg) ||
-                    arr[2].match(reg) ||
-                    arr[3].match(reg)
-                )
-            })
-        }
-        //untuk string
-        tr = dt.map(arr => {
             return `<tr>
-                <td>${arr[0]}</td>
-                <td>${arr[1]}</td>
-                <td>${arr[2]}</td>
-                <td>${arr[3]}</td>
+                <td>${bulan[arr.bln-1]}</td>
+                <td>${arr.qty}</td>
+                <td>${arr[tabel == "pengeluaran"? "keterangan" : tabel == "penjualan" ? "penjual" : "pembeli"]}</td>
+                <td>${idFormat(arr.jumlah)}</td>
             </tr>`
         })
-        if(keyword == ""){
-            tr += 
-                `<tr>
-                    <td colspan="3"><strong>Total<strong></td>
-                    <td><strong>${idFormat(total)}</strong></td>
-                </tr>`;
-            }
-        if(tr.length > 0)$(`tbody#data-${tabel}`).html(tr);
-        else $(`tbody#data-${tabel}`).html(`<tr><td colspan ="4"><strong>data tidak ada ( ﾉ ﾟｰﾟ)ﾉ </strong></td></tr>`);
-        
-    }else{
-        console.log("test 1")
-        $(`tbody#data-${tabel}`).html(`<tr><td><strong>maaf sedang bermasalah :( </strong></td></tr>`);
     }
-    
+    tr += 
+        `<tr>
+            <td colspan="3"><strong>Total<strong></td>
+            <td><strong>${idFormat(total)}</strong></td>
+        </tr>`;
+    $(`tbody#data-${tabel}`).html(tr);
 }
 
 //keseluruhan
-function loadKeseluruhan([dt_pembelian = [[]], dt_penjualan = [[]], dt_pengeluaran = [[]]], keyword = "") {
+function loadKeseluruhan([dt_pembelian = [[]], dt_penjualan = [[]], dt_pengeluaran = [[]]]) {
     let total = 0;
     let tr = ``;
     let seluruh = [] 
@@ -171,46 +138,31 @@ function loadKeseluruhan([dt_pembelian = [[]], dt_penjualan = [[]], dt_pengeluar
         if(dt_pengeluaran[1].length > 0) {
             keluar2 = parseInt(dt_pengeluaran[1].filter(pel => pel.bln == arr).map(pe => pe.jumlah));
         }
+
         //untuk nilai masuk
         if(dt_penjualan[1].length > 0) {
             masuk = parseInt(dt_penjualan[1].filter(jual => jual.bln == arr).map(ju => ju.jumlah));
         }
         
-        seluruh.push([bulan[arr-1], (isNaN(keluar1)? 0 : keluar1 )+ (isNaN(keluar2)? 0: keluar2), isNaN(masuk)? 0 : masuk])
+        seluruh.push([arr, (isNaN(keluar1)? 0 : keluar1 )+ (isNaN(keluar2)? 0: keluar2), isNaN(masuk)? 0 : masuk])
     })
-    //jika ada yang dicari ma a
-    if(keyword != ""){
-        let reg = new RegExp(keyword)
-        seluruh = seluruh.filter(sel => {
-            return (
-                sel[0].match(reg) ||
-                String(sel[1]).match(reg) ||
-                String(sel[2]).match(reg) ||
-                String(sel[3]).match(reg)
-            )
-        })
-
-    }
 
     //saatnya mencetak
     seluruh.forEach(sel => {
         total += sel[2] - sel[1];
         tr += 
         `<tr>
-            <td>${sel[0]}</td>
+            <td>${bulan[sel[0]-1]}</td>
             <td>${idFormat(sel[1])}</td>
             <td>${idFormat(sel[2])}</td>
             <td>${idFormat(sel[2] - sel[1])}</td>
         </tr>`
     })
-    if(keyword == ""){
-        tr +=
-        `<tr>
-            <td colspan="3"><strong>Total<strong></td>
-            <td><strong>${idFormat(total)}</strong></td>
-        </tr>`
-    }
-    if(!(seluruh.length > 0))tr += `<tr><td colspan ="4"><strong>data tidak ada ( ﾉ ﾟｰﾟ)ﾉ </strong></td></tr>`;
+    tr +=
+    `<tr>
+        <td colspan="3"><strong>Total<strong></td>
+        <td><strong>${idFormat(total)}</strong></td>
+    </tr>`
     $(`tbody#data-keseluruhan`).html(tr);
     return seluruh
     
@@ -242,27 +194,50 @@ function semua(keyword =  ""){
                     });
                 });
             });
-        }else{
-            let query1 = `select *, harga_pembelian / qty_pembelian as nominal_pembelian from pembelianIkan`;
+        } else {
+            console.log(keyword)
+
+            // Pembelian
+            let query1 = `select *, harga_pembelian / qty_pembelian as nominal_pembelian from pembelianIkan where pembelian like '%${keyword}%' or tanggal_pembelian like '%${keyword}%' or harga_pembelian like '%${keyword}%' or Qty_pembelian like '%${keyword}%' or nominal_pembelian like '%${keyword}%' ` ;
             db.all(query1,async (err, rows1) => {
-                let query2 = `select *, harga_penjualan * Qty_penjualan as jumlah_penjualan from penjualanIkan`
+
+                // Penjualan
+                let query2 = `select * , harga_penjualan * Qty_penjualan as jumlah_penjualan from penjualanIkan where penjual_penjualan like '%${keyword}%' or tanggal_penjualan like '%${keyword}%' or harga_penjualan like '%${keyword}%' or Qty_penjualan like '%${keyword}%' or jumlah_penjualan like '%${keyword}%' `
                 db.all(query2,async (err, rows2) => {
-                    let query3 = `select *, harga * qty as jumlah from pengeluaran`
+
+                    // Pengeluaran
+                    let query3 = `select *, harga * qty as jumlah from pengeluaran where keterangan like '%${keyword}%' or tanggal like '%${keyword}%' or harga like '%${keyword}%' or Qty like '%${keyword}%' or jumlah like '%${keyword}%' `
                     db.all(query3,async (err, rows3) => {
 
-                        console.log(keyword)
-                        // console.log(rows1, rows2, rows3)
+                        let all = []
+                        console.log(rows1, rows2, rows3)
+                        // console.log(pengeluaran(rows3)[1]);
                         //waktunya mengeprint tabel 3
-                        cetak("pengeluaran", pengeluaran(rows3)[1], keyword);
-                        cetak("penjualan", penjualan(rows2)[1], keyword);
-                        cetak("pembelian", pembelian(rows1)[1], keyword);
+
+
+
+                        if(pengeluaran(rows3)[1].length > 0){
+                            cetak("pengeluaran", pengeluaran(rows3)[1])
+                            all.push(pengeluaran(rows3))
+                        };
+                        if(penjualan(rows2)[1].length > 0){
+                            cetak("penjualan", penjualan(rows2)[1])
+                            all.push(penjualan(rows2))
+                        };
+                        if(pembelian(rows1)[1].length > 0){
+                            all.push(pembelian(rows1))
+                            cetak("pembelian", pembelian(rows1)[1])
+                        }else{
+                            cetak("pembelian")
+                        }
 
                         //waktunya memproses tabel total
-                        loadKeseluruhan([pembelian(rows1),penjualan(rows2),pengeluaran(rows3)], keyword)
+                        loadKeseluruhan(all)
                     });
                 });
             });
         }
+        
     })
 
     return dt
