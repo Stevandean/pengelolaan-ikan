@@ -67,7 +67,7 @@
                         <div class="row g-3">
                             <div class="col-auto">
                                 <button class="btn btn-sm btn-light btn-light-bordered" id="add-data" title="Tambah Data" onclick="openFormAddData()"><i class="fa fa-plus"></i></button>
-                                <button class="btn btn-sm btn-light btn-light-bordered" title="Export PDF" onclick="exportData('pdf')"><i class="fa fa-file-pdf"></i></button>
+                                <button class="btn btn-sm btn-light btn-light-bordered" title="Export PDF" onclick="printPage()"><i class="fa fa-file-pdf"></i></button>
                                 <button class="btn btn-sm btn-light btn-light-bordered" title="Print Table" onclick="printData()"><i class="fa fa-print"></i></button>
                             </div>
                             <div class="col-auto">
@@ -162,6 +162,16 @@
     <script src="../assets/js/toolbar.js"></script>
     <script src="../assets/js/pengeluaran.js"></script>
     <script src="../assets/js/main.js"></script>
+    <script>
+        function printPage() {
+        //    window.print();
+        let window_table = window.open('', '', 'height=500, width=500')
+        let tb = document.querySelectorAll(".table-sm")[1]
+        console.log(tb)
+        window_table.document.write(tb.outerHTML)
+        window_table.print()
+        }
+     </script>
 
 </body>
 </html>
