@@ -38,63 +38,6 @@ function deleteAction(id = false, data = false) {
     }   
 }
 
-//Pagination
-// $('#first-page').click(function(e) {
-//     e.preventDefault()
-//     let total_row_displayed = $('#row_per_page').val()
-//     $('#page_number').val(1)
-//     load_data(1, total_row_displayed) 
-// })
-// $('#last-page').click(function(e) {
-//     e.preventDefault()
-//     let total_page = $('#total_pages').val()
-//     $('#page_number').val(total_page)
-//     let total_row_displayed = $('#row_per_page').val()
-//     load_data(total_page, total_row_displayed)
-//     console.log(total_page, total_row_displayed)
-// })
-// $('#page_number').keyup(function() {
-//     let page_number = $(this).val()
-//     let total_row_displayed = $('#row_per_page').val()
-//     load_data(page_number, total_row_displayed)
-// })
-
-// $('#next-page').click(function(e) {
-//     e.preventDefault()
-//     let total_page = $('#total_pages').val()
-//     let input_val = $('#page_number').val()
-//     if (input_val == "") {
-//         input_val = 1
-//     }
-//     var page_no = parseInt(input_val)
-//     var total_row_displayed = $('#row_per_page').val()
-//     if (page_no < total_page) {
-//         $('#page_number').val(page_no + 1)
-//         load_data(page_no + 1, total_row_displayed)
-//     }
-// })
-// $('#prev-page').click(function(e) {
-//     e.preventDefault()
-//     var input_val = $('#page_number').val()
-//     var page_no = parseInt (input_val)
-//     if (page_no > 1) {
-//         $('#page_number').val(page_no - 1)
-//         var total_row_displayed = $('#row_per_page').val()
-//         load_data(page_no - 1, total_row_displayed)
-//     }
-// })
-
-// $('#row_per_page').change(function () {
-//     var total_row_displayed = $(this).val()
-//     var page_number = $('#page_number').val()
-//     var total_page = $('#total_page').val()
-//     if (page_number > total_page) {
-//         var page_number = 1
-//         $ ('#page_number').val(1)
-//     }
-//     load_data(page_number, total_row_displayed)
-// })
-
 function search() {
     let doc_id = $('body').attr('id')
     let searchVal = $('#search-data').val()

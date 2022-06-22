@@ -1,18 +1,22 @@
 {
-  "name": "pengelolaan-ikan",
+  "name": "sk4wan-koi-app",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "package-win": "electron-packager . --overwrite --platform-win-32 --arch=x64 --icon=assets/images/icon/sk4wan-koi.ico --prune=true --out=Sk4wan-Koi-App"
   },
   "author": "Stevandean",
   "license": "ISC",
   "dependencies": {
     "@electron/remote": "^2.0.8",
-    "electron": "^18.0.1",
     "imask": "^6.4.2",
     "print-js": "^1.6.0",
     "sqlite3": "^5.0.2"
+  },
+  "devDependencies": {
+    "electron": "^19.0.5",
+    "electron-packager": "^15.5.1"
   }
 }

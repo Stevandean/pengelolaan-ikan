@@ -49,79 +49,18 @@ let formatIdr = IMask.createPipe({
     }
   });
 
-// function totalPembelianPage (total_row_displayed) {
-//     let query = `select count (*) as total_row from pembelianIkan`
-//     db.serialize( () => {
-//         db.each (query, (err, result) => {
-//             if (err) throw err
-//             let total_page
-//             if (result.total_row%total_row_displayed == 0) {
-//                 total_page = parseInt(result.total_row)/parseInt(total_row_displayed)
-//             }else {
-//                 total_page = parseInt(result.total_row/total_row_displayed) + 1
-//             }
-//             $('#total_pages').val(total_page)
-//         })
-//     })
-// }
-
-// function loadPembelianIkan(page_number, total_row_displayed) {
-//     if(total_row_displayed == undefined) total_row_displayed = $('#total_pages').val();
-//     let row_number
-//     if(page_number < 2) {
-//         row_number = 0
-//     } else {
-//         row_number = (page_number-1) * total_row_displayed
-//     }
-//     total_page(total_row_displayed)
-
-//     let query = `select *, harga_pembelian / qty_pembelian as nominal_pembelian from pembelianIkan order by id desc limit ${row_number}, ${total_row_displayed}`
-//     db.serialize ( () => {
-//         db.all(query, (err, rows) => {
-//             if (err) throw err
-//             let tr = ''
-//             if(rows.length <1) {
-//                 tr += ''
-//             } else {
-//                 rows.forEach((row) => {
-//                     tr+=`<tr data-id=${row.id}>
-//                             <td data-colname="Id">
-//                                 ${row.id}
-//                                 <input type="checkbox" style="visibility:hidden" "id="${row.id}" class="data-checkbox">
-//                             </td>
-//                             <td>${row.pembelian}</td>
-//                             <td>${row.tanggal_pembelian}</td>
-//                             <td>${row.harga_pembelian}</td>
-//                             <td>${row.Qty_pembelian}</td>
-//                             <td>${row.nominal_pembelian}</td>
-//                             <td>
-//                                 <button class="btn btn-sm btn-light btn-light-bordered"><i class="fa fa-edit"></i></button>
-//                                 <button class="btn btn-sm btn-danger" onclick="deleteAction(${row.id}, '${row.pembelian}')" id="delete-data"><i class="fa fa-trash"></i></button>
-//                             </td>
-//                         </tr>`
-//                 })
-//             }
-//             $('tbody#data').html(tr)
-//         })
-//     })
-// }
 function loadPembelianIkan(query = `select *, harga_pembelian / qty_pembelian as nominal_pembelian from pembelianIkan`) {
-    if(page_number < 2) {
-        row_number = 0
-    } 
-
     db.serialize ( () => {
         db.all(query, (err, rows) => {
             if (err) throw err
             let tr = ''
             if(rows.length <1) {
-                tr += '<tr><td colspan ="4"><strong>data tidak ada ( ﾉ ﾟｰﾟ)ﾉ </strong></td></tr>'
+                tr += '<tr><td colspan ="7"><strong>data tidak ada ( ﾉ ﾟｰﾟ)ﾉ </strong></td></tr>'
             } else {
-                rows.forEach((row) => {
-                    tr+=`<tr data-id=${row.id}>
+                rows.forEach((row, index) => {
+                    tr+=`<tr data-id=${row.id} class = "font">
                             <td data-colname="Id">
-                                ${row.id}
-                                <input type="checkbox" style="visibility:hidden" "id="${row.id}" class="data-checkbox">
+                                ${index + 1}
                             </td>
                             <td>${row.pembelian}</td>
                             <td>${row.tanggal_pembelian}</td>

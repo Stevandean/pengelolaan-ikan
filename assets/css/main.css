@@ -1,7 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,900;1,100;1,900&family=Montserrat:ital,wght@1,600&display=swap');
+
+.font-thead {
+font-family: 'Lato', sans-serif; 
+font-style: italic;
+font-size: 16px;
+}
+
+.font {
+    font-style: normal;
+}
+
+.body-utama {
+    background-color: #FFFCFC;
+}
+
 .box-menu {
     width: 100%;
     height: 100%;
-    background-color: #EFF2F1;
+    background-color: #fff;
     border: 1px solid #cacfd2;
     border-radius: 5px;
     display: block;
@@ -16,7 +32,7 @@
 }
 
 .box-menu > a.menu-link:hover {
-    background-color: #f2efea;
+    background-color: #EFF2F1;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
 }
@@ -25,6 +41,7 @@
     padding: 2px 2px 4px 2px;
     text-align: center;
     color: white;
+    font-family: 'Montserrat', sans-serif;
     background-color: #ef4e3e;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
@@ -35,6 +52,7 @@
 }
 .btn-light-bordered{
     border: 1px solid #d0d3d4;
+    background-color: #D3D6C3 ;
 }
 .btn-light-bordered:hover{
     border: 1px solid #d0d3d4;
@@ -74,14 +92,121 @@ tbody#data:hover {
     cursor: pointer;
 }
 
-.body-utama {
-    background-color: #EFF2F1;
-}
-
 /* untuk draggable/ kecuali unyuk button */
 .drag {
     -webkit-app-region : drag;
 }
 .drag .btn{
     -webkit-app-region : none;
+}
+
+/* CSS SEARCH */
+
+.searchData {
+    position: absolute;
+    right: 40px;
+    top: 1px;
+    width: 28px;
+    height: 28px;
+    background: #fff;
+    border-radius: 20px;
+    transition: 0.5s;
+    box-shadow: 0 0 0 3px #D3D6C3  ;
+    overflow: hidden;
+}
+
+.searchData.active {
+    width: 180px;
+}
+
+.searchData .icon {
+    position: absolute;
+    top: 5px;
+    left: 6px;
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;;
+    cursor: pointer;
+}
+
+.searchData .icon::before {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border: 3px solid #F2AF1D;
+    border-radius: 50%;
+    transform: translate(-4px, -4px);
+}
+
+.searchData .icon::after {
+    content: '';
+    position: absolute;
+    width: 3px;
+    height: 10px;
+    background:#F2AF1D;
+    transform: translate(2px, 2px) rotate(315deg);
+}
+
+.searchData .input {
+    position: relative;
+    width: 300px;
+    height: 20px;
+    left: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.searchData .input .input-text {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    margin-top: 3px;
+    border: none;
+    outline: none;
+    font-size: 15px;
+}
+
+.pengeluaran {
+    max-width: 1920px;
+    /* background-color: #F5F5F1;
+    min-height: 88vh; */
+}
+
+.clear {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 15px;
+    height: 15px;
+    right: 8px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.clear::before {
+    position: absolute;
+    content: '';
+    width: 1px;
+    height: 15px;
+    background: #999;
+    transform: rotate(45deg);
+}
+
+.clear::after {
+    position: absolute;
+    content: '';
+    width: 1px;
+    height: 15px;
+    background: #999;
+    transform: rotate(315deg);
 }

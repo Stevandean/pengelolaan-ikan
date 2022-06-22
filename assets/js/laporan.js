@@ -1,5 +1,18 @@
 //pembelian
-let formatIdr = IMask.createPipe
+let formatIdr = IMask.createPipe ({
+    mask: 'RP num',
+    blocks: {
+        num: {
+            mask:Number,
+            thousandsSeparator: '.',
+            scale: 10,
+            radix: ',',
+            mapToRadix: [','],
+            padFractionalZeros: false,
+            signed: false
+        }
+    }
+})
 
 function loadPembelianIkan(keyword = '') {
     let query = ""
@@ -14,21 +27,22 @@ function loadPembelianIkan(keyword = '') {
             if (err) throw err
             let tr = ''
             if(rows.length <1) {
-                tr += '<tr><td colspan ="4"><strong>data tidak ada ( ﾉ ﾟｰﾟ)ﾉ </strong></td></tr>'
+                tr += '<tr><td colspan ="6"><strong>data tidak ada ( ﾉ ﾟｰﾟ)ﾉ </strong></td></tr>'
             } else {
-                rows.forEach((row) => {
+                rows.forEach((row, index) => {
                     totalPembelian += row.nominal_pembelian
                     tr+=`<tr>
+                            <td>${index + 1}</td>
                             <td>${row.pembelian}</td>
                             <td>${row.tanggal_pembelian}</td>
-                            <td>${row.harga_pembelian}</td>
+                            <td>${formatIdr(String(row.harga_pembelian))}</td>
                             <td>${row.Qty_pembelian}</td>
-                            <td>${row.nominal_pembelian}</td>
+                            <td>${formatIdr(String(row.nominal_pembelian))}</td>
                         </tr>`
                 })
                 tr += `
                 <tr>
-                    <td colspan="4">
+                    <td colspan="5">
                         Jumlah
                     </td>
                     <td>
@@ -57,25 +71,26 @@ function loadPenjualan(keyword = '') {
             if (err) throw err
             let tr = ''
             if(rows.length <1) {
-                tr += '<tr><td colspan ="4"><strong>data tidak ada ( ﾉ ﾟｰﾟ)ﾉ </strong></td></tr>'
+                tr += '<tr><td colspan ="6"><strong>data tidak ada ( ﾉ ﾟｰﾟ)ﾉ </strong></td></tr>'
             } else {
-                rows.forEach((row) => {
+                rows.forEach((row, index) => {
                     totalPenjualan += row.jumlah_penjualan
                     tr+=`<tr>
+                            <td>${index + 1}</td>
                             <td>${row.tanggal_penjualan}</td>
-                            <td>${row.harga_penjualan}</td>
+                            <td>${formatIdr(String(row.harga_penjualan))}</td>
                             <td>${row.Qty_penjualan}</td>
-                            <td>${row.jumlah_penjualan}</td>
+                            <td>${formatIdr(String(row.jumlah_penjualan))}</td>
                             <td>${row.penjual_penjualan}</td>
                         </tr>`
                 })
                 tr += `
                 <tr>
-                    <td colspan="4">
+                    <td colspan="5">
                         Jumlah
                     </td>
                     <td>
-                        Rp ${totalPenjualan}
+                        ${formatIdr(String(totalPenjualan))}
                     </td> 
                 </tr>`
 
@@ -99,21 +114,22 @@ function loadPengeluaran(keyword = '') {
             if (err) throw err
             let tr = '' 
             if(rows.length <1) {
-                tr += '<tr><td colspan ="4"><strong>data tidak ada ( ﾉ ﾟｰﾟ)ﾉ </strong></td></tr>'
+                tr += '<tr><td colspan ="6"><strong>data tidak ada ( ﾉ ﾟｰﾟ)ﾉ </strong></td></tr>'
             } else {
-                rows.forEach((row) => {
+                rows.forEach((row, index) => {
                     totalPengeluaran += row.jumlah
                     tr+=`<tr>
+                            <td>${index + 1}</td>
                             <td>${row.keterangan}</td>
                             <td>${row.tanggal}</td>
-                            <td>${row.harga}</td>
+                            <td>${formatIdr(String(row.harga))}</td>
                             <td>${row.Qty}</td>
-                            <td>${row.jumlah}</td>
+                            <td>${formatIdr(String(row.jumlah))}</td>
                         </tr>`
                 })
                 tr += `
                 <tr>
-                    <td colspan="4">
+                    <td colspan="5">
                         Jumlah
                     </td>
                     <td>

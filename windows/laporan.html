@@ -11,9 +11,11 @@
     </head>
     <body id="laporan-data">
         <nav class="navbar navbar-dark bg-dark fixed top drag">
-            <div style="display: inline-block; color:aliceblue"><span id="store-name" class ="ms-2" style ="font-size: 14,5px;">SK4WAN KOI</span></div>
-            <div style="display: inline-block;">                
-                <button class="btn btn-sm btn-secondary" id="minimize"><i class="fa fa-window-minimize"></i></button>
+            <div style="display: inline-block; color:aliceblue">
+                <span id="store-name" class ="ms-4" style ="font-size: 14,5px; font-family: 'Montserrat', sans-serif;">SK4WAN KOI | Laporan</span>
+            </div>
+            <div style="display: inline-block;" class="hide-print">                
+                    <button class="btn btn-sm btn-secondary" id="minimize"><i class="fa fa-window-minimize"></i></button>
                 <button class="btn btn-sm btn-danger me-4" id="close"><i class="fa fa-times"></i></button>
             </div>
         </nav>
@@ -26,37 +28,15 @@
                             <div class="col-auto">
                                 <button class="btn btn-sm btn-light btn-light-bordered" id="add-data" title="Tambah Data" onclick="openFormAddData()"><i class="fa fa-plus"></i></button>
                                 <button class="btn btn-sm btn-light btn-light-bordered" title="Export PDF" onclick="printPage()"><i class="fa fa-file-pdf"></i></button>
-                                <button class="btn btn-sm btn-light btn-light-bordered" title="Print Table" onclick="printData()"><i class="fa fa-print"></i></button>
                             </div>
                             <div class="col-auto">
-                                <select name="" id="row_per_page" class="form-select form-select-sm">
-                                    <option value="2">10</option>
-                                    <option value="25">25</option>
-                                    <option value="50">50</option>
-                                    <option value="75">75</option>
-                                </select>
-                            </div>
-                            <div id="pagination" class="col-auto">
-                                <div class="btn-group btn-group-sm">
-                                    <div class="btn-group btn-group-sm me-1">
-                                        <a href="#" class="btn btn-sm btn-light btn-light-bordered" id="first-page"><i class="fa fa-step-backward"></i></a>
-                                        <a href="#" class="btn btn-sm btn-light btn-light-bordered" id="prev-page"><i class="fa fa-backward"></i></a>
-                                    </div>
-                                    <div class="input-group input-group-sm me-1">
-                                        <input type="text" class="form-control form-control-sm" id="page_number" value="1">
-                                        <input type="text" class="form-control form-control-sm" id="total_pages" readonly>
-                                    </div>
-                                    <div class="btn-group btn-group-sm">
-                                        <a href="#" class="btn btn-sm btn-light btn-light-bordered" id="next-page"><i class="fa fa-forward"></i></a>
-                                        <a href="#" class="btn btn-sm btn-light btn-light-bordered" id="last-page"><i class="fa fa-step-forward"></i></a>
-                                    </div>
-                                    <div class="col-auto" style="margin-left: 560px;">
-                                        <div class="input-group" id="search-input-group">
-                                            <input type="text" class="form-control form-control-sm" id="search-data" name="search-data" placeholder="Search">
-                                            <div class="input-group-append">
-                                                <button class="btn btn-sm btn-light btn-light-bordered" id="btn-search-data"><i class="fa fa-search"></i></button>
-                                            </div>
+                                <div class="wrapper">
+                                    <div class="searchData">
+                                        <div class="icon" ></div>
+                                        <div class="input">
+                                            <input class="input-text" type="text" id="search-data" placeholder = "Search"  value="">
                                         </div>
+                                        <span class="clear" onclick="clearSearch()"></span>
                                     </div>
                                 </div>
                             </div>
@@ -74,7 +54,8 @@
                         <h3>Pengeluaran</h3>
                         <table class="table table-sm table-bordered" style="font-size: 13px;">
                             <thead class="table-light" id="col-head">
-                                <tr>
+                                <tr class="font-thead">
+                                    <th>No</th>
                                     <th>Keterangan</th>
                                     <th>Tanggal</th>
                                     <th>Harga</th>
@@ -95,9 +76,10 @@
                 <div class="col-xl-12">
                     <div class="table-responsive">
                         <h3>Penjualan</h3>
-                        <table class="table table-sm table-bordered" style="font-size: 13px;">
+                        <table class="table table-sm table-bordered">
                             <thead class="table-light" id="col-head">
-                                <tr>
+                                <tr class="font-thead">
+                                    <th>No</th>
                                     <th>Tanggal</th>
                                     <th>Harga</th>
                                     <th>Qty</th>
@@ -119,7 +101,8 @@
                         <h3>Pembelian</h3>
                         <table class="table table-sm table-bordered" style="font-size: 13px;">
                             <thead class="table-light" id="col-head">
-                                <tr>
+                                <tr class="font-thead">
+                                    <th>No</th>
                                     <th>Pembelian</th>
                                     <th>Tanggal</th>
                                     <th>Harga</th>
@@ -163,4 +146,16 @@
             ipcRenderer.send ('minimize:data', docId)
         }
     </script>
+    <script>
+        const icon = document.querySelector('.icon')
+        const searchData = document.querySelector('.searchData')
+        icon.onclick = function () {
+            searchData.classList.toggle('active')
+        }
+
+        function clearSearch () {
+            document.getElementById('search-data').value = '';
+            search()
+        }
+    </script>    
 </body></html>

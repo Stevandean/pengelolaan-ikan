@@ -35,9 +35,6 @@ let doc_id = $('body').attr('id')
         }
     }
 
-    // let page_number = $('#page_number').val()
-    // let total_row_displayed = $('#row_per_page').val()
-    // let searchVal = $('#search-data').val()
     load_data()
 
     deleteRecord = (id) => {
