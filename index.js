@@ -5,6 +5,7 @@ const remote = require('@electron/remote/main')
 const rmt = require('electron').remote; // hapusss bila tidak digunakan
 const ipc = ipcMain
 remote.initialize()
+let dir = [__dirname,__filename];
 
 let mainWindow 
 let pengeluaranWindow
@@ -13,6 +14,7 @@ let pembelianIkanWindow
 let cashflowWindow
 let laporanWindow
 let editDataModal
+
 
 mainWin = () => {
     mainWindow = new BrowserWindow ({

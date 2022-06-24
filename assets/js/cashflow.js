@@ -203,7 +203,7 @@ function loadKeseluruhan([dt_pembelian = [[]], dt_penjualan = [[]], dt_pengeluar
             <td>${idFormat(sel[2] - sel[1])}</td>
         </tr>`
     })
-    if(keyword == ""){
+    if(keyword == "" && seluruh.length != 0){
         tr +=
         `<tr>
             <td colspan="3"><strong>Total<strong></td>
