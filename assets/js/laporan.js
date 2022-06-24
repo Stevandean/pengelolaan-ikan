@@ -41,12 +41,12 @@ function loadPembelianIkan(keyword = '') {
                         </tr>`
                 })
                 tr += `
-                <tr>
+                <tr style = "font-weight: bold">
                     <td colspan="5">
                         Jumlah
                     </td>
                     <td>
-                        Rp ${totalPembelian}
+                        ${formatIdr(String(totalPembelian))}
                     </td> 
                 </tr>`
 
@@ -85,7 +85,7 @@ function loadPenjualan(keyword = '') {
                         </tr>`
                 })
                 tr += `
-                <tr>
+                <tr style = "font-weight: bold">
                     <td colspan="5">
                         Jumlah
                     </td>
@@ -128,12 +128,12 @@ function loadPengeluaran(keyword = '') {
                         </tr>`
                 })
                 tr += `
-                <tr>
+                <tr style = "font-weight: bold">
                     <td colspan="5">
                         Jumlah
                     </td>
                     <td>
-                        Rp ${totalPengeluaran}
+                        ${formatIdr(String(totalPengeluaran))}
                     </td> 
                 </tr>`
 

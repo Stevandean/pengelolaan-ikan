@@ -65,7 +65,7 @@ function pembelian(rows){
 
 // function untuk mengolah data penjualan
 function penjualan(rows){
-    let data = [];
+    let data = [];  
     let perbulan = [];
 
     //untuk mencari bulan yang tersedia
